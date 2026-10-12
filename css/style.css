@@ -1,0 +1,110 @@
+/* Abakio – base styles */
+
+:root {
+  --bg-1: #2b2f7a;      /* deep blue, matches the icon background */
+  --bg-2: #4a2a7a;      /* purple */
+  --text: #ffffff;
+  --muted: #c9cbf0;
+  --teal: #1fb5a6;      /* mascot body */
+  --orange: #ff8a2a;    /* mascot face */
+  --card: rgba(255, 255, 255, 0.12);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: linear-gradient(160deg, var(--bg-1), var(--bg-2));
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+main { flex: 1; display: flex; justify-content: center; padding: 16px; }
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.mascot {
+  width: 160px;
+  height: 160px;
+  border-radius: 32px;
+  margin-top: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+h1 { font-size: 2.6rem; margin: 8px 0 0; letter-spacing: 0.5px; }
+
+.tagline { margin: 0 0 16px; color: var(--muted); font-size: 1.2rem; }
+
+.profile-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+
+.empty { color: var(--muted); }
+
+/* Buttons are large: small fingers, cheap touchscreens */
+.btn {
+  font: inherit;
+  font-size: 1.2rem;
+  min-height: 56px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text);
+  background: var(--card);
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary { background: var(--orange); font-weight: 700; width: 100%; }
+
+.profile-btn { background: var(--teal); font-weight: 600; }
+
+.btn-link {
+  font: inherit;
+  background: none;
+  border: none;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--orange);
+  font-weight: 600;
+}
+.banner[hidden] { display: none; }
+.banner button {
+  font: inherit;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 14px;
+  background: #fff;
+  color: var(--bg-1);
+  cursor: pointer;
+}

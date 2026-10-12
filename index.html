@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="af">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Abakio</title>
+  <meta name="description" content="Abakio – maths practice for primary school learners">
+  <meta name="theme-color" content="#2b2f7a">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Update banner: hidden until a new version is waiting -->
+  <div id="update-banner" class="banner" hidden>
+    <span data-i18n="update.available">A new version is available.</span>
+    <button id="update-btn" type="button" data-i18n="update.reload">Update</button>
+  </div>
+
+  <main id="app">
+    <section id="screen-home" class="screen">
+      <img class="mascot" src="assets/icons/icon-512.png" alt="" width="200" height="200">
+      <h1>Abakio</h1>
+      <p class="tagline" data-i18n="home.tagline">Let's practise maths!</p>
+
+      <div id="profile-list" class="profile-list"></div>
+
+      <button id="add-profile-btn" class="btn btn-primary" type="button" data-i18n="home.addProfile">
+        Add a learner
+      </button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <button id="lang-btn" class="btn-link" type="button">English</button>
+    <span id="version-label"></span>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

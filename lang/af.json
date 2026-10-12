@@ -1,0 +1,18 @@
+{
+  "common": {
+    "grade": "Graad"
+  },
+  "home": {
+    "tagline": "Kom ons oefen wiskunde!",
+    "addProfile": "Voeg 'n leerder by",
+    "noProfiles": "Nog geen leerders nie. Voeg een by om te begin.",
+    "askName": "Wat is die leerder se naam?",
+    "askGrade": "Watter graad? (1 tot 7)",
+    "badGrade": "Tik asseblief 'n graad van 1 tot 7.",
+    "hello": "Hallo"
+  },
+  "update": {
+    "available": "'n Nuwe weergawe van Abakio is gereed.",
+    "reload": "Dateer nou op"
+  }
+}

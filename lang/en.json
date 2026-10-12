@@ -1,0 +1,18 @@
+{
+  "common": {
+    "grade": "Grade"
+  },
+  "home": {
+    "tagline": "Let's practise maths!",
+    "addProfile": "Add a learner",
+    "noProfiles": "No learners yet. Add one to start.",
+    "askName": "What is the learner's name?",
+    "askGrade": "Which grade? (1 to 7)",
+    "badGrade": "Please enter a grade from 1 to 7.",
+    "hello": "Hello"
+  },
+  "update": {
+    "available": "A new version of Abakio is ready.",
+    "reload": "Update now"
+  }
+}
