@@ -8,8 +8,16 @@ import { renderPlay } from './play.js';
 
 const DEFAULTS = { mode: 'learn', op: 'mul', tables: [2, 3, 4, 5], count: 10 };
 
+// Turnaround ("Draai om") starts off for Gr 1–3 and on for Gr 4+,
+// matching when the curriculum teaches commutative pairs with the tables.
 export function getSettings(profileId) {
-  return { ...DEFAULTS, ...load(`tables.settings.${profileId}`, {}) };
+  const profile = getProfile(profileId);
+  const saved = load(`tables.settings.${profileId}`, {});
+  return {
+    ...DEFAULTS,
+    turnaround: (profile?.grade ?? 1) >= 4,
+    ...saved
+  };
 }
 
 export function renderTablesSetup(profileId) {
@@ -65,6 +73,15 @@ export function renderTablesSetup(profileId) {
       </div>
 
       <div class="field">
+        <span data-i18n="tables.turn"></span>
+        <div class="seg">${seg('turn', [
+          ['off', 'tables.off'],
+          ['on', 'tables.on']
+        ])}</div>
+        <small class="hint" data-i18n="tables.turnHint"></small>
+      </div>
+
+      <div class="field" id="count-field">
         <span data-i18n="tables.count"></span>
         <div class="seg">
           <button type="button" class="seg-btn" data-count="10">10</button>
@@ -74,6 +91,8 @@ export function renderTablesSetup(profileId) {
         </div>
         <small class="hint" id="inf-hint" data-i18n="tables.unlimitedHint"></small>
       </div>
+
+      <small class="hint" id="learn-hint" data-i18n="tables.learnHint"></small>
 
       <p class="error" id="error" hidden data-i18n="tables.pickOne"></p>
       <button type="button" class="btn btn-primary" id="start" data-i18n="tables.start"></button>
@@ -90,9 +109,17 @@ export function renderTablesSetup(profileId) {
       b.classList.toggle('on', String(s.count) === b.dataset.count);
       if (b.dataset.count === 'inf') b.hidden = s.mode !== 'game';
     });
+    app.querySelectorAll('[data-turn]').forEach((b) =>
+      b.classList.toggle('on', (b.dataset.turn === 'on') === s.turnaround));
     app.querySelector('#inf-hint').hidden = s.count !== 'inf';
+    // Learn mode goes through the chosen tables in order, so no question count.
+    app.querySelector('#count-field').hidden = s.mode === 'learn';
+    app.querySelector('#learn-hint').hidden = s.mode !== 'learn';
     app.querySelector('#error').hidden = true;
   };
+
+  app.querySelectorAll('[data-turn]').forEach((b) =>
+    b.addEventListener('click', () => { s.turnaround = b.dataset.turn === 'on'; refresh(); }));
 
   app.querySelectorAll('[data-mode]').forEach((b) =>
     b.addEventListener('click', () => { s.mode = b.dataset.mode; refresh(); }));

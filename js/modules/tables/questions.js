@@ -1,7 +1,9 @@
 // Builds times-table questions with four answer options.
-// A "fact" is one table entry: { op: 'mul' | 'div', a, b }
-//   mul: a × b          (a is the chosen table, b runs 1–12)
-//   div: (a × b) ÷ a    (answer b)
+//
+// A "fact" is one table entry: { op: 'mul' | 'div', a, b, turn }
+//   a is the table (e.g. 2 for the 2-times table), b runs 1–12.
+//   Normal form, table number second:   b × a      and   (a × b) ÷ a = b
+//   Turnaround form ("Draai om"):       a × b      and   (a × b) ÷ b = a
 
 export function shuffle(list) {
   const arr = [...list];
@@ -12,25 +14,50 @@ export function shuffle(list) {
   return arr;
 }
 
-// All facts for the chosen tables and operation.
+const wantsMul = (op) => op === 'mul' || op === 'mix';
+const wantsDiv = (op) => op === 'div' || op === 'mix';
+
+// All facts for the chosen tables and operation (normal form only).
 export function buildPool(tables, op) {
   const pool = [];
   for (const a of tables) {
     for (let b = 1; b <= 12; b++) {
-      if (op === 'mul' || op === 'mix') pool.push({ op: 'mul', a, b });
-      if (op === 'div' || op === 'mix') pool.push({ op: 'div', a, b });
+      if (wantsMul(op)) pool.push({ op: 'mul', a, b, turn: false });
+      if (wantsDiv(op)) pool.push({ op: 'div', a, b, turn: false });
     }
   }
   return pool;
 }
 
-export function factKey(f) {
-  return f.op === 'mul'
-    ? `${Math.min(f.a, f.b)}x${Math.max(f.a, f.b)}`
-    : `${f.a * f.b}/${f.a}`;
+// Learn mode: the tables in order, 1 × 2, 2 × 2, 3 × 2 …
+// With "mixed", each × fact is followed by its ÷ partner (3 × 2 = 6, then 6 ÷ 2 = 3).
+// With turnaround, each fact is followed by its turned-around form (3 × 2, then 2 × 3).
+export function buildLearnRound(tables, op, turnaround) {
+  const round = [];
+  const add = (f) => {
+    round.push(f);
+    if (turnaround && f.a !== f.b) round.push({ ...f, turn: true });
+  };
+  for (const a of [...tables].sort((x, y) => x - y)) {
+    for (let b = 1; b <= 12; b++) {
+      if (wantsMul(op)) add({ op: 'mul', a, b, turn: false });
+      if (wantsDiv(op)) add({ op: 'div', a, b, turn: false });
+    }
+  }
+  return round;
 }
 
-// A fixed-length round: shuffled facts, repeated if the round is longer
+// Game mode: with turnaround on, about half the facts are asked the other way round.
+export function withTurn(f, turnaround) {
+  return { ...f, turn: turnaround && f.a !== f.b && Math.random() < 0.5 };
+}
+
+export function factKey(f) {
+  if (f.op === 'mul') return `${Math.min(f.a, f.b)}x${Math.max(f.a, f.b)}`;
+  return `${f.a * f.b}/${f.turn ? f.b : f.a}`;
+}
+
+// A fixed-length game round: shuffled facts, repeated if the round is longer
 // than the pool, never the same fact twice in a row.
 export function buildRound(pool, count) {
   const round = [];
@@ -55,14 +82,14 @@ export function randomFact(pool, last) {
   return f;
 }
 
-// Wrong options that a learner could plausibly pick: neighbouring facts
-// and answers that are a little off. Never random numbers.
-function wrongOptions(f, answer) {
+// Wrong options a learner could plausibly pick: neighbouring facts and
+// answers that are a little off. Never random numbers.
+function wrongOptions(f, answer, divisor) {
   const { a, b } = f;
   const candidates = f.op === 'mul'
     ? [a * (b + 1), a * (b - 1), (a + 1) * b, (a - 1) * b,
        answer + 1, answer - 1, answer + 2, answer - 2, answer + 10, answer - 10]
-    : [answer + 1, answer - 1, answer + 2, answer - 2, answer + 3, a];
+    : [answer + 1, answer - 1, answer + 2, answer - 2, answer + 3, divisor];
 
   const unique = [...new Set(candidates)].filter((n) => n > 0 && n !== answer);
   const picked = shuffle(unique).slice(0, 3);
@@ -79,20 +106,20 @@ function wrongOptions(f, answer) {
 export function makeQuestion(f) {
   let text;
   let answer;
+  let divisor = null;
   if (f.op === 'mul') {
-    // Show 7 × 8 and 8 × 7 both, so learners see the two orders.
-    const swap = Math.random() < 0.5;
-    text = swap ? `${f.b} × ${f.a}` : `${f.a} × ${f.b}`;
+    text = f.turn ? `${f.a} × ${f.b}` : `${f.b} × ${f.a}`;
     answer = f.a * f.b;
   } else {
-    text = `${f.a * f.b} ÷ ${f.a}`;
-    answer = f.b;
+    divisor = f.turn ? f.b : f.a;
+    answer = f.turn ? f.a : f.b;
+    text = `${f.a * f.b} ÷ ${divisor}`;
   }
   return {
     fact: f,
     key: factKey(f),
     text,
     answer,
-    options: shuffle([answer, ...wrongOptions(f, answer)])
+    options: shuffle([answer, ...wrongOptions(f, answer, divisor)])
   };
 }

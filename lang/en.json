@@ -39,12 +39,18 @@
     "count": "How many questions?",
     "unlimitedHint": "Keep going until you make a mistake!",
     "pickOne": "Choose at least one table.",
-    "start": "Start!"
+    "start": "Start!",
+    "turn": "Turnaround",
+    "turnHint": "Also ask 2 × 3 when practising 3 × 2",
+    "on": "On",
+    "off": "Off",
+    "learnHint": "Tables are practised in order: 1 × 2, 2 × 2, 3 × 2 …"
   },
   "play": {
     "next": "Next",
     "penalty": "+3 seconds",
-    "quitConfirm": "Do you want to stop?"
+    "quitConfirm": "Do you want to stop?",
+    "review": "Let's practise these again"
   },
   "results": {
     "wellDone": "Well done!",

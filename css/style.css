@@ -270,3 +270,4 @@ h2 { margin: 0; font-size: 1.5rem; }
 .record { font-size: 1.4rem; font-weight: 800; color: #ffe08a; margin: 0; }
 .result-lines p { margin: 4px 0; font-size: 1.2rem; }
 .results .btn { width: 100%; }
+.field[hidden] { display: none; }

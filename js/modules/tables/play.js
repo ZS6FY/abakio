@@ -1,9 +1,10 @@
 // Tables module: the question screen and the results screen.
 //
 // Three ways to play:
-//   learn          – no timer; a wrong fact is shown and comes back later in the round
-//   game (10/20/30) – stopwatch; a wrong answer adds 3 seconds; fastest time wins
-//   game (∞)       – keep going until the first wrong answer; longest streak wins
+//   learn          – no timer; the tables in order (1 × 2, 2 × 2, 3 × 2 …);
+//                    missed facts are practised again at the end of the round
+//   game (10/20/30) – shuffled, stopwatch; a wrong answer adds 3 seconds; fastest time wins
+//   game (∞)       – shuffled, keep going until the first wrong answer; longest streak wins
 
 import { getProfile, recordAnswer, getBest, setBest } from '../../core/storage.js';
 import { t } from '../../core/i18n.js';
@@ -11,10 +12,12 @@ import { go, onLeave } from '../../core/router.js';
 import { mount, setPlaying, formatSeconds } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
 import { renderTablesSetup } from './setup.js';
-import { buildPool, buildRound, randomFact, makeQuestion } from './questions.js';
+import {
+  buildPool, buildRound, buildLearnRound, randomFact, withTurn, makeQuestion, factKey
+} from './questions.js';
 
 const PENALTY_MS = 3000;
-const REQUEUE_GAP = 3; // in learn mode a missed fact returns 3 questions later
+const MAX_REVIEWS = 2; // learn mode: missed facts come back at most twice
 
 export function renderPlay(profileId, settings) {
   const profile = getProfile(profileId);
@@ -25,9 +28,15 @@ export function renderPlay(profileId, settings) {
   const isStreak = settings.mode === 'game' && settings.count === 'inf';
   const isTimed = settings.mode === 'game' && !isStreak;
 
+  const turn = settings.turnaround;
   const pool = buildPool(settings.tables, settings.op);
-  const round = isStreak ? [] : buildRound(pool, settings.count);
+  let round;
+  if (isLearn) round = buildLearnRound(settings.tables, settings.op, turn);
+  else if (isStreak) round = [];
+  else round = buildRound(pool, settings.count).map((f) => withTurn(f, turn));
 
+  let missed = [];
+  let reviews = 0;
   let index = 0;
   let q = null;
   let lastFact = null;
@@ -73,14 +82,14 @@ export function renderPlay(profileId, settings) {
     el('progress').textContent = isStreak ? `🔥 ${streak}` : `${index + 1} / ${round.length}`;
   }
 
-  function ask() {
-    const fact = isStreak ? randomFact(pool, lastFact) : round[index];
+  function ask(note = '') {
+    const fact = isStreak ? withTurn(randomFact(pool, lastFact), turn) : round[index];
     lastFact = fact;
     q = makeQuestion(fact);
     locked = false;
 
     el('question').textContent = `${q.text} = ?`;
-    el('feedback').textContent = '';
+    el('feedback').textContent = note;
     el('next').hidden = true;
     el('answers').innerHTML = q.options
       .map((n) => `<button type="button" class="ans" data-value="${n}">${n}</button>`)
@@ -114,9 +123,9 @@ export function renderPlay(profileId, settings) {
 
     wrong++;
     if (isLearn) {
-      // Show the full fact, put it back into the round, wait for "Next".
+      // Show the full fact, keep it for the review at the end, wait for "Next".
       el('feedback').textContent = `${q.text} = ${q.answer}`;
-      round.splice(Math.min(index + 1 + REQUEUE_GAP, round.length), 0, q.fact);
+      if (!missed.some((f) => factKey(f) === q.key)) missed.push(q.fact);
       el('next').hidden = false;
     } else if (isTimed) {
       penalty += PENALTY_MS;
@@ -131,8 +140,16 @@ export function renderPlay(profileId, settings) {
 
   function next() {
     index++;
-    if (!isStreak && index >= round.length) finish();
-    else ask();
+    if (isStreak || index < round.length) return ask();
+
+    // Learn mode: practise the missed facts again before finishing.
+    if (isLearn && missed.length && reviews < MAX_REVIEWS) {
+      reviews++;
+      round.push(...missed);
+      missed = [];
+      return ask(t('play.review'));
+    }
+    finish();
   }
 
   function finish() {
@@ -151,7 +168,7 @@ export function renderPlay(profileId, settings) {
 }
 
 function bestKey(s) {
-  return `tables|${s.mode}|${s.op}|${s.count}|${s.tables.join(',')}`;
+  return `tables|${s.mode}|${s.op}|${s.count}|${s.turnaround ? 'turn' : 'fixed'}|${s.tables.join(',')}`;
 }
 
 function renderResults(profileId, settings, r) {

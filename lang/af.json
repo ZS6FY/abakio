@@ -39,12 +39,18 @@
     "count": "Hoeveel vrae?",
     "unlimitedHint": "Hou aan totdat jy 'n fout maak!",
     "pickOne": "Kies ten minste een tafel.",
-    "start": "Begin!"
+    "start": "Begin!",
+    "turn": "Draai om",
+    "turnHint": "Vra ook 2 × 3 wanneer jy 3 × 2 oefen",
+    "on": "Aan",
+    "off": "Af",
+    "learnHint": "Die tafels word in volgorde geoefen: 1 × 2, 2 × 2, 3 × 2 …"
   },
   "play": {
     "next": "Volgende",
     "penalty": "+3 sekondes",
-    "quitConfirm": "Wil jy ophou?"
+    "quitConfirm": "Wil jy ophou?",
+    "review": "Kom ons oefen hierdie weer"
   },
   "results": {
     "wellDone": "Mooi so!",
