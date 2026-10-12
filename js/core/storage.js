@@ -30,6 +30,10 @@ export function getProfiles() {
   return load('profiles', []);
 }
 
+export function getProfile(id) {
+  return getProfiles().find((p) => p.id === id) || null;
+}
+
 export function addProfile(name, grade) {
   const profiles = getProfiles();
   const profile = {
@@ -45,4 +49,31 @@ export function addProfile(name, grade) {
 
 export function removeProfile(id) {
   save('profiles', getProfiles().filter((p) => p.id !== id));
+}
+
+// ---- Per-fact results -----------------------------------------------
+// For every fact a learner answers (e.g. "7x8" or "56/7") we keep how often
+// it was right, how often wrong, and the last answer time. This will feed
+// the revision pool later (wrong or slow facts come back more often).
+
+export function recordAnswer(profileId, factKey, correct, ms) {
+  const key = `stats.${profileId}`;
+  const stats = load(key, {});
+  const s = stats[factKey] || { r: 0, w: 0, ms: 0 };
+  if (correct) s.r += 1; else s.w += 1;
+  s.ms = Math.round(ms);
+  stats[factKey] = s;
+  save(key, stats);
+}
+
+// ---- Best scores ----------------------------------------------------
+
+export function getBest(profileId, key) {
+  return load(`best.${profileId}`, {})[key] ?? null;
+}
+
+export function setBest(profileId, key, value) {
+  const all = load(`best.${profileId}`, {});
+  all[key] = value;
+  save(`best.${profileId}`, all);
 }

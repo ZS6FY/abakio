@@ -5,11 +5,60 @@
   "home": {
     "tagline": "Let's practise maths!",
     "addProfile": "Add a learner",
-    "noProfiles": "No learners yet. Add one to start.",
-    "askName": "What is the learner's name?",
-    "askGrade": "Which grade? (1 to 7)",
-    "badGrade": "Please enter a grade from 1 to 7.",
-    "hello": "Hello"
+    "noProfiles": "No learners yet. Add one to start."
+  },
+  "add": {
+    "title": "New learner",
+    "name": "Name",
+    "namePlaceholder": "First name only",
+    "save": "Save",
+    "needName": "Please type a name."
+  },
+  "menu": {
+    "hello": "Hello, {name}!",
+    "tables": "Times tables",
+    "tablesSub": "Learn and play",
+    "missing": "Missing numbers",
+    "make24": "Make 10 / 24",
+    "soon": "Coming soon"
+  },
+  "tables": {
+    "title": "Times tables",
+    "mode": "How do you want to practise?",
+    "learn": "Learn",
+    "learnSub": "No rush",
+    "game": "Play",
+    "gameSub": "Beat the clock",
+    "op": "Which sums?",
+    "mul": "Times ×",
+    "div": "Divide ÷",
+    "mix": "Mixed",
+    "which": "Which tables?",
+    "all": "All",
+    "none": "None",
+    "count": "How many questions?",
+    "unlimitedHint": "Keep going until you make a mistake!",
+    "pickOne": "Choose at least one table.",
+    "start": "Start!"
+  },
+  "play": {
+    "next": "Next",
+    "penalty": "+3 seconds",
+    "quitConfirm": "Do you want to stop?"
+  },
+  "results": {
+    "wellDone": "Well done!",
+    "correct": "Correct: {n}",
+    "wrong": "Wrong: {n}",
+    "time": "Time: {t}",
+    "best": "Your best: {t}",
+    "newRecord": "New record! 🏆",
+    "streak": "You got {n} right in a row!",
+    "bestStreak": "Your best: {n} in a row",
+    "oops": "The answer was {a}",
+    "again": "Play again",
+    "settings": "Change settings",
+    "menu": "Back to menu"
   },
   "update": {
     "available": "A new version of Abakio is ready.",

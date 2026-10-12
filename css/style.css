@@ -108,3 +108,165 @@ h1 { font-size: 2.6rem; margin: 8px 0 0; letter-spacing: 0.5px; }
   color: var(--bg-1);
   cursor: pointer;
 }
+
+/* ---- Screens added in v0.2 -------------------------------------- */
+
+#app:empty { min-height: 60vh; }
+
+body.playing .footer { visibility: hidden; }
+
+h2 { margin: 0; font-size: 1.5rem; }
+
+.topbar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn-icon {
+  font: inherit;
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* Form fields */
+.field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  font-weight: 600;
+}
+.field-head { display: flex; justify-content: space-between; align-items: center; }
+.field input {
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 400;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: #fff;
+  color: #222;
+}
+.field input:focus { outline: none; border-color: var(--orange); }
+
+.error { color: #ffd0c4; margin: 0; }
+.hint { color: var(--muted); font-weight: 400; }
+.hint[hidden], .error[hidden] { display: none; }
+
+/* Chips: grade picker and table picker */
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 8px; }
+.chip {
+  font: inherit;
+  font-size: 1.1rem;
+  min-height: 48px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.chip.on { background: var(--teal); border-color: #fff; font-weight: 700; }
+
+/* Segmented choices: mode, operation, round size */
+.seg { display: flex; gap: 8px; }
+.seg-btn {
+  flex: 1;
+  font: inherit;
+  font-size: 1.1rem;
+  min-height: 52px;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.seg-btn small { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+.seg-btn.on { background: var(--teal); border-color: #fff; font-weight: 700; }
+.seg-btn.on small { color: #e8fffb; }
+.seg-btn[hidden] { display: none; }
+
+/* Learner menu tiles */
+.tiles { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.tile {
+  font: inherit;
+  color: var(--text);
+  background: var(--card);
+  border: none;
+  border-radius: var(--radius);
+  padding: 18px 10px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.tile:not(:disabled) { background: var(--teal); }
+.tile:disabled { opacity: 0.55; cursor: default; }
+.tile-icon { font-size: 2rem; font-weight: 800; }
+.tile-title { font-weight: 700; font-size: 1.1rem; }
+.tile-sub { font-size: 0.85rem; color: #e8fffb; }
+
+/* Question screen */
+.play-top {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+#timer { min-width: 70px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.question {
+  font-size: clamp(2.6rem, 12vw, 4rem);
+  font-weight: 800;
+  margin: 28px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.feedback { min-height: 1.6em; font-size: 1.3rem; font-weight: 600; color: #ffe08a; }
+
+.answers { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ans {
+  font: inherit;
+  font-size: 2rem;
+  font-weight: 700;
+  min-height: 84px;
+  border: 3px solid transparent;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--bg-1);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.ans:active { transform: scale(0.97); }
+.ans.ok { background: #3ccf6e; color: #fff; border-color: #fff; }
+.ans.bad { background: #ff5a5a; color: #fff; border-color: #fff; }
+
+.btn[hidden] { display: none; }
+
+/* Results */
+.mascot.small { width: 120px; height: 120px; border-radius: 26px; }
+.stars { font-size: 2.4rem; letter-spacing: 6px; }
+.record { font-size: 1.4rem; font-weight: 800; color: #ffe08a; margin: 0; }
+.result-lines p { margin: 4px 0; font-size: 1.2rem; }
+.results .btn { width: 100%; }

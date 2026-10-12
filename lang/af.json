@@ -5,11 +5,60 @@
   "home": {
     "tagline": "Kom ons oefen wiskunde!",
     "addProfile": "Voeg 'n leerder by",
-    "noProfiles": "Nog geen leerders nie. Voeg een by om te begin.",
-    "askName": "Wat is die leerder se naam?",
-    "askGrade": "Watter graad? (1 tot 7)",
-    "badGrade": "Tik asseblief 'n graad van 1 tot 7.",
-    "hello": "Hallo"
+    "noProfiles": "Nog geen leerders nie. Voeg een by om te begin."
+  },
+  "add": {
+    "title": "Nuwe leerder",
+    "name": "Naam",
+    "namePlaceholder": "Net die voornaam",
+    "save": "Stoor",
+    "needName": "Tik asseblief 'n naam."
+  },
+  "menu": {
+    "hello": "Hallo, {name}!",
+    "tables": "Maaltafels",
+    "tablesSub": "Leer en speel",
+    "missing": "Ontbrekende getalle",
+    "make24": "Maak 10 / 24",
+    "soon": "Kom binnekort"
+  },
+  "tables": {
+    "title": "Maaltafels",
+    "mode": "Hoe wil jy oefen?",
+    "learn": "Leer",
+    "learnSub": "Geen haas nie",
+    "game": "Speel",
+    "gameSub": "Klop die klok",
+    "op": "Watter somme?",
+    "mul": "Maal ×",
+    "div": "Deel ÷",
+    "mix": "Gemeng",
+    "which": "Watter tafels?",
+    "all": "Almal",
+    "none": "Geen",
+    "count": "Hoeveel vrae?",
+    "unlimitedHint": "Hou aan totdat jy 'n fout maak!",
+    "pickOne": "Kies ten minste een tafel.",
+    "start": "Begin!"
+  },
+  "play": {
+    "next": "Volgende",
+    "penalty": "+3 sekondes",
+    "quitConfirm": "Wil jy ophou?"
+  },
+  "results": {
+    "wellDone": "Mooi so!",
+    "correct": "Reg: {n}",
+    "wrong": "Verkeerd: {n}",
+    "time": "Tyd: {t}",
+    "best": "Jou beste: {t}",
+    "newRecord": "Nuwe rekord! 🏆",
+    "streak": "Jy het {n} reg in 'n ry gekry!",
+    "bestStreak": "Jou beste: {n} in 'n ry",
+    "oops": "Die antwoord was {a}",
+    "again": "Speel weer",
+    "settings": "Verander instellings",
+    "menu": "Terug na kieslys"
   },
   "update": {
     "available": "'n Nuwe weergawe van Abakio is gereed.",

@@ -1,49 +1,8 @@
 // Abakio – app entry point.
 
-import { initLanguage, setLanguage, currentLang, LANGUAGES, t } from './core/i18n.js';
-import { getProfiles, addProfile } from './core/storage.js';
-
-// ---- Home screen ----------------------------------------------------
-
-function renderProfiles() {
-  const list = document.getElementById('profile-list');
-  const profiles = getProfiles();
-  list.innerHTML = '';
-
-  if (profiles.length === 0) {
-    const p = document.createElement('p');
-    p.className = 'empty';
-    p.textContent = t('home.noProfiles');
-    list.appendChild(p);
-    return;
-  }
-
-  for (const profile of profiles) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'btn profile-btn';
-    btn.textContent = `${profile.name} · ${t('common.grade')} ${profile.grade}`;
-    btn.addEventListener('click', () => {
-      // Placeholder until the module menu exists.
-      alert(`${t('home.hello')}, ${profile.name}!`);
-    });
-    list.appendChild(btn);
-  }
-}
-
-// Temporary simple prompts – will be replaced by a proper form screen.
-function onAddProfile() {
-  const name = prompt(t('home.askName'));
-  if (!name || !name.trim()) return;
-  const grade = prompt(t('home.askGrade'), '1');
-  const g = Number(grade);
-  if (!Number.isInteger(g) || g < 1 || g > 7) {
-    alert(t('home.badGrade'));
-    return;
-  }
-  addProfile(name, g);
-  renderProfiles();
-}
+import { initLanguage, setLanguage, currentLang, LANGUAGES } from './core/i18n.js';
+import { go, rerender } from './core/router.js';
+import { renderHome } from './ui/home.js';
 
 // ---- Language switch (handy during development) ---------------------
 
@@ -54,7 +13,7 @@ function updateLangButton() {
   btn.onclick = async () => {
     await setLanguage(other);
     updateLangButton();
-    renderProfiles();
+    rerender();
   };
 }
 
@@ -92,7 +51,6 @@ async function setupServiceWorker() {
   });
 
   // Update check: compare the online version.json with the installed one.
-  // Only a tiny file is fetched, and only when there is a connection.
   checkForUpdate(reg);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') checkForUpdate(reg);
@@ -122,8 +80,7 @@ async function checkForUpdate(reg) {
 async function start() {
   await initLanguage();
   updateLangButton();
-  renderProfiles();
-  document.getElementById('add-profile-btn').addEventListener('click', onAddProfile);
+  go(renderHome);
   setupServiceWorker();
 }
 
