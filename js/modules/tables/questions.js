@@ -122,6 +122,8 @@ export function makeQuestion(f) {
     fact: f,
     key: factKey(f),
     text,
+    display: `${text} = ?`,
+    full: `${text} = ${answer}`,
     answer,
     options: shuffle([answer, ...wrongOptions(f, answer, divisor)])
   };

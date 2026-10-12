@@ -5,7 +5,9 @@ import { t } from '../core/i18n.js';
 import { go } from '../core/router.js';
 import { mount, esc, setPlaying } from './dom.js';
 import { renderHome } from './home.js';
-import { renderTablesSetup } from '../modules/tables/setup.js';
+import { renderSetup } from '../modules/practice/setup.js';
+import { TABLES } from '../modules/tables/module.js';
+import { MISSING } from '../modules/missing/module.js';
 import { renderTrophyRoom } from './trophy-room.js';
 
 export function renderLearnerMenu(profileId) {
@@ -28,10 +30,10 @@ export function renderLearnerMenu(profileId) {
           <span class="tile-sub" data-i18n="menu.tablesSub"></span>
         </button>
 
-        <button type="button" class="tile" disabled>
-          <span class="tile-icon">3×?</span>
+        <button type="button" class="tile" id="tile-missing">
+          <span class="tile-icon">?×2</span>
           <span class="tile-title" data-i18n="menu.missing"></span>
-          <span class="tile-sub" data-i18n="menu.soon"></span>
+          <span class="tile-sub" data-i18n="menu.missingSub"></span>
         </button>
 
         <button type="button" class="tile" disabled>
@@ -49,6 +51,7 @@ export function renderLearnerMenu(profileId) {
     </section>`);
 
   app.querySelector('#back').addEventListener('click', () => go(renderHome));
-  app.querySelector('#tile-tables').addEventListener('click', () => go(renderTablesSetup, profileId));
+  app.querySelector('#tile-tables').addEventListener('click', () => go(renderSetup, profileId, TABLES));
+  app.querySelector('#tile-missing').addEventListener('click', () => go(renderSetup, profileId, MISSING));
   app.querySelector('#tile-trophies').addEventListener('click', () => go(renderTrophyRoom, profileId));
 }

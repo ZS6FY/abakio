@@ -1,4 +1,6 @@
-// Tables module: choose mode, operation, tables and round size.
+// Shared setup screen for the table-based modules (Maaltafels, Ontbrekende getalle):
+// choose mode, order, operation, tables, Draai om and round size.
+// `mod` is the module's config (see tables/module.js and missing/module.js).
 
 import { getProfile, load, save } from '../../core/storage.js';
 import { go } from '../../core/router.js';
@@ -10,9 +12,9 @@ const DEFAULTS = { mode: 'learn', learnOrder: 'order', op: 'mul', tables: [2, 3,
 
 // Turnaround ("Draai om") starts off for Gr 1–3 and on for Gr 4+,
 // matching when the curriculum teaches commutative pairs with the tables.
-export function getSettings(profileId) {
+export function getSettings(profileId, mod) {
   const profile = getProfile(profileId);
-  const saved = load(`tables.settings.${profileId}`, {});
+  const saved = load(`${mod.id}.settings.${profileId}`, {});
   return {
     ...DEFAULTS,
     turnaround: (profile?.grade ?? 1) >= 4,
@@ -20,11 +22,11 @@ export function getSettings(profileId) {
   };
 }
 
-export function renderTablesSetup(profileId) {
+export function renderSetup(profileId, mod) {
   setPlaying(false);
   if (!getProfile(profileId)) return;
 
-  const s = getSettings(profileId);
+  const s = getSettings(profileId, mod);
 
   const seg = (name, options) => options.map(([value, label, sub]) => `
     <button type="button" class="seg-btn" data-${name}="${value}">
@@ -40,7 +42,7 @@ export function renderTablesSetup(profileId) {
     <section class="screen">
       <div class="topbar">
         <button type="button" class="btn-icon" id="back" aria-label="back">←</button>
-        <h2 data-i18n="tables.title"></h2>
+        <h2 data-i18n="${mod.title}"></h2>
         <span></span>
       </div>
 
@@ -86,7 +88,7 @@ export function renderTablesSetup(profileId) {
           ['off', 'tables.off'],
           ['on', 'tables.on']
         ])}</div>
-        <small class="hint" data-i18n="tables.turnHint"></small>
+        <small class="hint" data-i18n="${mod.turnHint}"></small>
       </div>
 
       <div class="field" id="count-field">
@@ -100,7 +102,7 @@ export function renderTablesSetup(profileId) {
         <small class="hint" id="inf-hint" data-i18n="tables.unlimitedHint"></small>
       </div>
 
-      <small class="hint" id="learn-hint" data-i18n="tables.learnHint"></small>
+      <small class="hint" id="learn-hint" data-i18n="${mod.learnHint}"></small>
 
       <p class="error" id="error" hidden data-i18n="tables.pickOne"></p>
       <button type="button" class="btn btn-primary" id="start" data-i18n="tables.start"></button>
@@ -162,8 +164,8 @@ export function renderTablesSetup(profileId) {
       return;
     }
     s.tables.sort((x, y) => x - y);
-    save(`tables.settings.${profileId}`, s);
-    go(renderPlay, profileId, { ...s });
+    save(`${mod.id}.settings.${profileId}`, s);
+    go(renderPlay, profileId, { ...s }, mod);
   });
 
   refresh();

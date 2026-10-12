@@ -23,7 +23,8 @@
     "make24": "Maak 10 / 24",
     "soon": "Kom binnekort",
     "trophies": "Trofeekamer",
-    "trophiesSub": "Jou rekords en kentekens"
+    "trophiesSub": "Jou rekords en kentekens",
+    "missingSub": "Vind die versteekte getal"
   },
   "tables": {
     "title": "Maaltafels",
@@ -128,6 +129,32 @@
     },
     "master": {
       "name": "Meester van ×{n}"
+    },
+    "missing": {
+      "first": {
+        "name": "Eerste leidraad",
+        "how": "Voltooi jou eerste rondte ontbrekende getalle"
+      },
+      "perfect": {
+        "name": "Skerp oog",
+        "how": "Voltooi 'n Leer-rondte sonder 'n fout"
+      },
+      "streak10": {
+        "name": "Speurder",
+        "how": "Kry 10 reg in 'n ry"
+      },
+      "streak25": {
+        "name": "Meesterspeurder",
+        "how": "Kry 25 reg in 'n ry"
+      },
+      "speedy": {
+        "name": "Vinnige vingers",
+        "how": "Antwoord 20 vrae in minder as 75 sekondes sonder 'n fout"
+      },
+      "allRound": {
+        "name": "Niks kan wegkruip nie",
+        "how": "Met Draai om aan: al 12 tafels, 30 vrae, sonder 'n fout"
+      }
     }
   },
   "remove": {
@@ -139,5 +166,10 @@
     "typeName": "Tik \"{name}\" om te bevestig:",
     "confirmBtn": "Verwyder permanent",
     "cancel": "Kanselleer"
+  },
+  "missing": {
+    "title": "Ontbrekende getalle",
+    "learnHint": "In volgorde geoefen: ? × 2 = 2, ? × 2 = 4, ? × 2 = 6 …",
+    "turnHint": "Die ? kan ook op ander plekke wegkruip, bv. 6 × ? = 12 en ? ÷ 2 = 6"
   }
 }

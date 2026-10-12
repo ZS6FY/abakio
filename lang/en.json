@@ -23,7 +23,8 @@
     "make24": "Make 10 / 24",
     "soon": "Coming soon",
     "trophies": "Trophy room",
-    "trophiesSub": "Your records and badges"
+    "trophiesSub": "Your records and badges",
+    "missingSub": "Find the hidden number"
   },
   "tables": {
     "title": "Times tables",
@@ -128,6 +129,32 @@
     },
     "master": {
       "name": "Master of ×{n}"
+    },
+    "missing": {
+      "first": {
+        "name": "First clue",
+        "how": "Finish your first missing-numbers round"
+      },
+      "perfect": {
+        "name": "Sharp eye",
+        "how": "Finish a Learn round without a mistake"
+      },
+      "streak10": {
+        "name": "Detective",
+        "how": "Get 10 right in a row"
+      },
+      "streak25": {
+        "name": "Master detective",
+        "how": "Get 25 right in a row"
+      },
+      "speedy": {
+        "name": "Quick fingers",
+        "how": "Answer 20 questions in under 75 seconds without a mistake"
+      },
+      "allRound": {
+        "name": "Nothing can hide",
+        "how": "With Turnaround on: all 12 tables, 30 questions, without a mistake"
+      }
     }
   },
   "remove": {
@@ -139,5 +166,10 @@
     "typeName": "Type \"{name}\" to confirm:",
     "confirmBtn": "Remove permanently",
     "cancel": "Cancel"
+  },
+  "missing": {
+    "title": "Missing numbers",
+    "learnHint": "Practised in order: ? × 2 = 2, ? × 2 = 4, ? × 2 = 6 …",
+    "turnHint": "The ? can also hide in other places, e.g. 6 × ? = 12 and ? ÷ 2 = 6"
   }
 }

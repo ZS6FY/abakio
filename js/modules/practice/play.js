@@ -1,4 +1,6 @@
-// Tables module: the question screen and the results screen.
+// Shared question screen and results screen for the table-based modules.
+// `mod` is the module's config: it supplies makeQuestion() and the module id
+// used for settings, records and badges.
 //
 // Three ways to play:
 //   learn          – no timer; the tables in order (1 × 2, 2 × 2, 3 × 2 …);
@@ -8,20 +10,19 @@
 
 import { getProfile, recordAnswer, getBest, setBest, save } from '../../core/storage.js';
 import { awardBadges, badgeName, badgeIcon } from './badges.js';
-import { esc } from '../../ui/dom.js';
 import { t } from '../../core/i18n.js';
 import { go, onLeave } from '../../core/router.js';
-import { mount, setPlaying, formatSeconds } from '../../ui/dom.js';
+import { mount, setPlaying, formatSeconds, esc } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
-import { renderTablesSetup } from './setup.js';
+import { renderSetup } from './setup.js';
 import {
-  buildPool, buildRound, buildLearnRound, randomFact, withTurn, makeQuestion, factKey
-} from './questions.js';
+  buildPool, buildRound, buildLearnRound, randomFact, withTurn, factKey
+} from '../tables/questions.js';
 
 const PENALTY_MS = 3000;
 const MAX_REVIEWS = 2; // learn mode: missed facts come back at most twice
 
-export function renderPlay(profileId, settings) {
+export function renderPlay(profileId, settings, mod) {
   const profile = getProfile(profileId);
   if (!profile) return;
   setPlaying(true);
@@ -89,10 +90,10 @@ export function renderPlay(profileId, settings) {
   function ask(note = '') {
     const fact = isStreak ? withTurn(randomFact(pool, lastFact), turn) : round[index];
     lastFact = fact;
-    q = makeQuestion(fact);
+    q = mod.makeQuestion(fact);
     locked = false;
 
-    el('question').textContent = `${q.text} = ?`;
+    el('question').textContent = q.display;
     el('feedback').textContent = note;
     el('next').hidden = true;
     el('answers').innerHTML = q.options
@@ -128,8 +129,9 @@ export function renderPlay(profileId, settings) {
     wrong++;
     if (isLearn) {
       // Show the full fact, keep it for the review at the end, wait for "Next".
-      el('feedback').textContent = `${q.text} = ${q.answer}`;
-      if (!missed.some((f) => factKey(f) === q.key)) missed.push(q.fact);
+      el('feedback').textContent = q.full;
+      const same = (f) => factKey(f) === factKey(q.fact) && f.turn === q.fact.turn;
+      if (!missed.some(same)) missed.push(q.fact);
       el('next').hidden = false;
     } else if (isTimed) {
       penalty += PENALTY_MS;
@@ -158,24 +160,24 @@ export function renderPlay(profileId, settings) {
 
   function finish() {
     clearInterval(timerId);
-    renderResults(profileId, settings, {
+    renderResults(profileId, settings, mod, {
       correct, wrong, streak, total: elapsed(), isLearn, isTimed, isStreak
     });
   }
 
   el('next').addEventListener('click', next);
   el('quit').addEventListener('click', () => {
-    if (confirm(t('play.quitConfirm'))) go(renderTablesSetup, profileId);
+    if (confirm(t('play.quitConfirm'))) go(renderSetup, profileId, mod);
   });
 
   ask();
 }
 
-function bestKey(s) {
-  return `tables|${s.mode}|${s.op}|${s.count}|${s.turnaround ? 'turn' : 'fixed'}|${s.tables.join(',')}`;
+function bestKey(s, mod) {
+  return `${mod.id}|${s.mode}|${s.op}|${s.count}|${s.turnaround ? 'turn' : 'fixed'}|${s.tables.join(',')}`;
 }
 
-function renderResults(profileId, settings, r) {
+function renderResults(profileId, settings, mod, r) {
   setPlaying(false);
   const lines = [];
   let stars = '';
@@ -186,7 +188,7 @@ function renderResults(profileId, settings, r) {
     lines.push(t('results.correct', { n: r.correct }));
     lines.push(t('results.wrong', { n: r.wrong }));
   } else if (r.isTimed) {
-    const key = bestKey(settings);
+    const key = bestKey(settings, mod);
     const best = getBest(profileId, key);
     record = best === null || r.total < best;
     if (record) setBest(profileId, key, Math.round(r.total));
@@ -195,7 +197,7 @@ function renderResults(profileId, settings, r) {
     lines.push(t('results.wrong', { n: r.wrong }));
     if (!record) lines.push(t('results.best', { t: formatSeconds(best) }));
   } else {
-    const key = bestKey(settings);
+    const key = bestKey(settings, mod);
     const best = getBest(profileId, key);
     record = r.streak > 0 && (best === null || r.streak > best);
     if (record) setBest(profileId, key, r.streak);
@@ -204,7 +206,7 @@ function renderResults(profileId, settings, r) {
     if (!record && best !== null) lines.push(t('results.bestStreak', { n: best }));
   }
 
-  const newBadges = awardBadges(profileId, settings, r);
+  const newBadges = awardBadges(profileId, mod.id, settings, r);
   const badgeHtml = newBadges.length
     ? `<div class="new-badges">
          <p class="record" data-i18n="results.newBadge"></p>
@@ -236,11 +238,11 @@ function renderResults(profileId, settings, r) {
   if (nudge) {
     app.querySelector('#shuffled').addEventListener('click', () => {
       const next = { ...settings, learnOrder: 'shuffle' };
-      save(`tables.settings.${profileId}`, next);
-      go(renderPlay, profileId, next);
+      save(`${mod.id}.settings.${profileId}`, next);
+      go(renderPlay, profileId, next, mod);
     });
   }
-  app.querySelector('#again').addEventListener('click', () => go(renderPlay, profileId, settings));
-  app.querySelector('#settings').addEventListener('click', () => go(renderTablesSetup, profileId));
+  app.querySelector('#again').addEventListener('click', () => go(renderPlay, profileId, settings, mod));
+  app.querySelector('#settings').addEventListener('click', () => go(renderSetup, profileId, mod));
   app.querySelector('#menu').addEventListener('click', () => go(renderLearnerMenu, profileId));
 }

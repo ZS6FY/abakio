@@ -5,7 +5,7 @@
 // AND in version.json (keep them the same). That is what triggers
 // the "new version available" banner on the kids' devices.
 
-const VERSION = '0.5.1';
+const VERSION = '0.6.0';
 const CACHE = `abakio-${VERSION}`;
 
 // Every file the app needs to run offline. Add new files here as the app grows.
@@ -24,10 +24,13 @@ const APP_SHELL = [
   'js/ui/learner-menu.js',
   'js/ui/remove-learner.js',
   'js/ui/trophy-room.js',
-  'js/modules/tables/badges.js',
+  'js/modules/practice/badges.js',
+  'js/modules/practice/setup.js',
+  'js/modules/practice/play.js',
+  'js/modules/tables/module.js',
   'js/modules/tables/questions.js',
-  'js/modules/tables/setup.js',
-  'js/modules/tables/play.js',
+  'js/modules/missing/module.js',
+  'js/modules/missing/questions.js',
   'lang/af.json',
   'lang/en.json',
   'assets/icons/favicon.ico',
