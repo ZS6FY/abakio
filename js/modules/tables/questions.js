@@ -29,22 +29,25 @@ export function buildPool(tables, op) {
   return pool;
 }
 
-// Learn mode: the tables in order, 1 × 2, 2 × 2, 3 × 2 …
-// With "mixed", each × fact is followed by its ÷ partner (3 × 2 = 6, then 6 ÷ 2 = 3).
-// With turnaround, each fact is followed by its turned-around form (3 × 2, then 2 × 3).
-export function buildLearnRound(tables, op, turnaround) {
-  const round = [];
-  const add = (f) => {
-    round.push(f);
-    if (turnaround && f.a !== f.b) round.push({ ...f, turn: true });
-  };
+// Learn mode: the tables in order, 1 × 2, 2 × 2, 3 × 2 … or shuffled.
+// Facts that belong together stay together as a group, even when shuffled:
+//   with "mixed", each × fact is followed by its ÷ partner (3 × 2 = 6, then 6 ÷ 2 = 3);
+//   with turnaround, each fact is followed by its turned-around form (3 × 2, then 2 × 3).
+export function buildLearnRound(tables, op, turnaround, shuffled = false) {
+  const groups = [];
   for (const a of [...tables].sort((x, y) => x - y)) {
     for (let b = 1; b <= 12; b++) {
+      const group = [];
+      const add = (f) => {
+        group.push(f);
+        if (turnaround && f.a !== f.b) group.push({ ...f, turn: true });
+      };
       if (wantsMul(op)) add({ op: 'mul', a, b, turn: false });
       if (wantsDiv(op)) add({ op: 'div', a, b, turn: false });
+      groups.push(group);
     }
   }
-  return round;
+  return (shuffled ? shuffle(groups) : groups).flat();
 }
 
 // Game mode: with turnaround on, about half the facts are asked the other way round.

@@ -6,7 +6,7 @@ import { mount, setPlaying } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
 import { renderPlay } from './play.js';
 
-const DEFAULTS = { mode: 'learn', op: 'mul', tables: [2, 3, 4, 5], count: 10 };
+const DEFAULTS = { mode: 'learn', learnOrder: 'order', op: 'mul', tables: [2, 3, 4, 5], count: 10 };
 
 // Turnaround ("Draai om") starts off for Gr 1–3 and on for Gr 4+,
 // matching when the curriculum teaches commutative pairs with the tables.
@@ -49,6 +49,14 @@ export function renderTablesSetup(profileId) {
         <div class="seg">${seg('mode', [
           ['learn', 'tables.learn', 'tables.learnSub'],
           ['game', 'tables.game', 'tables.gameSub']
+        ])}</div>
+      </div>
+
+      <div class="field" id="order-field">
+        <span data-i18n="tables.order"></span>
+        <div class="seg">${seg('order', [
+          ['order', 'tables.inOrder'],
+          ['shuffle', 'tables.shuffled']
         ])}</div>
       </div>
 
@@ -114,12 +122,17 @@ export function renderTablesSetup(profileId) {
     app.querySelector('#inf-hint').hidden = s.count !== 'inf';
     // Learn mode goes through the chosen tables in order, so no question count.
     app.querySelector('#count-field').hidden = s.mode === 'learn';
-    app.querySelector('#learn-hint').hidden = s.mode !== 'learn';
+    app.querySelector('#order-field').hidden = s.mode !== 'learn';
+    app.querySelectorAll('[data-order]').forEach((b) =>
+      b.classList.toggle('on', b.dataset.order === s.learnOrder));
+    app.querySelector('#learn-hint').hidden = !(s.mode === 'learn' && s.learnOrder === 'order');
     app.querySelector('#error').hidden = true;
   };
 
   app.querySelectorAll('[data-turn]').forEach((b) =>
     b.addEventListener('click', () => { s.turnaround = b.dataset.turn === 'on'; refresh(); }));
+  app.querySelectorAll('[data-order]').forEach((b) =>
+    b.addEventListener('click', () => { s.learnOrder = b.dataset.order; refresh(); }));
 
   app.querySelectorAll('[data-mode]').forEach((b) =>
     b.addEventListener('click', () => { s.mode = b.dataset.mode; refresh(); }));

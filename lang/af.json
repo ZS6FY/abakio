@@ -20,7 +20,9 @@
     "tablesSub": "Leer en speel",
     "missing": "Ontbrekende getalle",
     "make24": "Maak 10 / 24",
-    "soon": "Kom binnekort"
+    "soon": "Kom binnekort",
+    "trophies": "Trofeekamer",
+    "trophiesSub": "Jou rekords en kentekens"
   },
   "tables": {
     "title": "Maaltafels",
@@ -44,7 +46,10 @@
     "turnHint": "Vra ook 2 × 3 wanneer jy 3 × 2 oefen",
     "on": "Aan",
     "off": "Af",
-    "learnHint": "Die tafels word in volgorde geoefen: 1 × 2, 2 × 2, 3 × 2 …"
+    "learnHint": "Die tafels word in volgorde geoefen: 1 × 2, 2 × 2, 3 × 2 …",
+    "order": "Volgorde",
+    "inOrder": "In volgorde",
+    "shuffled": "Geskommel"
   },
   "play": {
     "next": "Volgende",
@@ -64,10 +69,64 @@
     "oops": "Die antwoord was {a}",
     "again": "Speel weer",
     "settings": "Verander instellings",
-    "menu": "Terug na kieslys"
+    "menu": "Terug na kieslys",
+    "newBadge": "Nuwe kenteken!",
+    "tryShuffled": "Jy ken dit in volgorde. Probeer dit nou geskommel!",
+    "tryShuffledBtn": "Probeer geskommel"
   },
   "update": {
     "available": "'n Nuwe weergawe van Abakio is gereed.",
     "reload": "Dateer nou op"
+  },
+  "trophy": {
+    "title": "Trofeekamer",
+    "badges": "Kentekens",
+    "masters": "Tafelmeesters",
+    "mastersHow": "Speel een tafel alleen in Speel-modus, 20 of 30 vrae, sonder 'n fout.",
+    "records": "Rekords",
+    "noRecords": "Nog geen rekords nie. Speel 'n rondte!",
+    "earned": "Verdien op {d}"
+  },
+  "rec": {
+    "unlimited": "Onbeperk",
+    "questions": "{n} vrae",
+    "inRow": "{n} in 'n ry"
+  },
+  "badges": {
+    "first": {
+      "name": "Eerste tree",
+      "how": "Voltooi jou eerste rondte"
+    },
+    "perfectLearn": {
+      "name": "Foutloos",
+      "how": "Voltooi 'n Leer-rondte sonder 'n fout"
+    },
+    "shuffledPerfect": {
+      "name": "Deurmekaar, maar reg",
+      "how": "Voltooi 'n geskommelde Leer-rondte sonder 'n fout"
+    },
+    "streak10": {
+      "name": "Op dreef",
+      "how": "Kry 10 reg in 'n ry"
+    },
+    "streak25": {
+      "name": "Vuurwarm",
+      "how": "Kry 25 reg in 'n ry"
+    },
+    "streak50": {
+      "name": "Onkeerbaar",
+      "how": "Kry 50 reg in 'n ry"
+    },
+    "speedy": {
+      "name": "Blitsvinnig",
+      "how": "Antwoord 20 vrae in minder as 60 sekondes sonder 'n fout"
+    },
+    "champion": {
+      "name": "Tafelkampioen",
+      "how": "Speel al 12 tafels, 30 vrae, sonder 'n fout"
+    },
+    "master": {
+      "name": "Meester van ×{n}"
+    }
   }
 }

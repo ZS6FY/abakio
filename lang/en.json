@@ -20,7 +20,9 @@
     "tablesSub": "Learn and play",
     "missing": "Missing numbers",
     "make24": "Make 10 / 24",
-    "soon": "Coming soon"
+    "soon": "Coming soon",
+    "trophies": "Trophy room",
+    "trophiesSub": "Your records and badges"
   },
   "tables": {
     "title": "Times tables",
@@ -44,7 +46,10 @@
     "turnHint": "Also ask 2 × 3 when practising 3 × 2",
     "on": "On",
     "off": "Off",
-    "learnHint": "Tables are practised in order: 1 × 2, 2 × 2, 3 × 2 …"
+    "learnHint": "Tables are practised in order: 1 × 2, 2 × 2, 3 × 2 …",
+    "order": "Order",
+    "inOrder": "In order",
+    "shuffled": "Shuffled"
   },
   "play": {
     "next": "Next",
@@ -64,10 +69,64 @@
     "oops": "The answer was {a}",
     "again": "Play again",
     "settings": "Change settings",
-    "menu": "Back to menu"
+    "menu": "Back to menu",
+    "newBadge": "New badge!",
+    "tryShuffled": "You know it in order. Now try it shuffled!",
+    "tryShuffledBtn": "Try shuffled"
   },
   "update": {
     "available": "A new version of Abakio is ready.",
     "reload": "Update now"
+  },
+  "trophy": {
+    "title": "Trophy room",
+    "badges": "Badges",
+    "masters": "Table masters",
+    "mastersHow": "Play one table on its own in Play mode, 20 or 30 questions, without a mistake.",
+    "records": "Records",
+    "noRecords": "No records yet. Play a round!",
+    "earned": "Earned {d}"
+  },
+  "rec": {
+    "unlimited": "Unlimited",
+    "questions": "{n} questions",
+    "inRow": "{n} in a row"
+  },
+  "badges": {
+    "first": {
+      "name": "First step",
+      "how": "Finish your first round"
+    },
+    "perfectLearn": {
+      "name": "Flawless",
+      "how": "Finish a Learn round without a mistake"
+    },
+    "shuffledPerfect": {
+      "name": "Shuffled and right",
+      "how": "Finish a shuffled Learn round without a mistake"
+    },
+    "streak10": {
+      "name": "On a roll",
+      "how": "Get 10 right in a row"
+    },
+    "streak25": {
+      "name": "Red hot",
+      "how": "Get 25 right in a row"
+    },
+    "streak50": {
+      "name": "Unstoppable",
+      "how": "Get 50 right in a row"
+    },
+    "speedy": {
+      "name": "Lightning fast",
+      "how": "Answer 20 questions in under 60 seconds without a mistake"
+    },
+    "champion": {
+      "name": "Tables champion",
+      "how": "Play all 12 tables, 30 questions, without a mistake"
+    },
+    "master": {
+      "name": "Master of ×{n}"
+    }
   }
 }

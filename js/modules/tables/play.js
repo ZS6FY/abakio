@@ -6,7 +6,9 @@
 //   game (10/20/30) – shuffled, stopwatch; a wrong answer adds 3 seconds; fastest time wins
 //   game (∞)       – shuffled, keep going until the first wrong answer; longest streak wins
 
-import { getProfile, recordAnswer, getBest, setBest } from '../../core/storage.js';
+import { getProfile, recordAnswer, getBest, setBest, save } from '../../core/storage.js';
+import { awardBadges, badgeName, badgeIcon } from './badges.js';
+import { esc } from '../../ui/dom.js';
 import { t } from '../../core/i18n.js';
 import { go, onLeave } from '../../core/router.js';
 import { mount, setPlaying, formatSeconds } from '../../ui/dom.js';
@@ -31,7 +33,9 @@ export function renderPlay(profileId, settings) {
   const turn = settings.turnaround;
   const pool = buildPool(settings.tables, settings.op);
   let round;
-  if (isLearn) round = buildLearnRound(settings.tables, settings.op, turn);
+  if (isLearn) {
+    round = buildLearnRound(settings.tables, settings.op, turn, settings.learnOrder === 'shuffle');
+  }
   else if (isStreak) round = [];
   else round = buildRound(pool, settings.count).map((f) => withTurn(f, turn));
 
@@ -200,18 +204,42 @@ function renderResults(profileId, settings, r) {
     if (!record && best !== null) lines.push(t('results.bestStreak', { n: best }));
   }
 
+  const newBadges = awardBadges(profileId, settings, r);
+  const badgeHtml = newBadges.length
+    ? `<div class="new-badges">
+         <p class="record" data-i18n="results.newBadge"></p>
+         ${newBadges.map((id) => `
+           <div class="badge earned"><span class="badge-icon">${badgeIcon(id)}</span>
+           <span class="badge-name">${esc(badgeName(id))}</span></div>`).join('')}
+       </div>`
+    : '';
+
+  // A perfect round in order: suggest the shuffled version next (a nudge, not a gate).
+  const nudge = r.isLearn && r.wrong === 0 && settings.learnOrder !== 'shuffle';
+
   const app = mount(`
     <section class="screen results">
       <img class="mascot small" src="assets/icons/icon-512.png" alt="" width="120" height="120">
       <h2 data-i18n="results.wellDone"></h2>
       <div class="stars">${stars}</div>
       ${record ? '<p class="record" data-i18n="results.newRecord"></p>' : ''}
-      <div class="result-lines">${lines.map((l) => `<p>${l}</p>`).join('')}</div>
-      <button type="button" class="btn btn-primary" id="again" data-i18n="results.again"></button>
+      <div class="result-lines">${lines.map((l) => `<p>${esc(l)}</p>`).join('')}</div>
+      ${badgeHtml}
+      ${nudge ? `
+        <p class="nudge" data-i18n="results.tryShuffled"></p>
+        <button type="button" class="btn btn-primary" id="shuffled" data-i18n="results.tryShuffledBtn"></button>` : ''}
+      <button type="button" class="btn${nudge ? '' : ' btn-primary'}" id="again" data-i18n="results.again"></button>
       <button type="button" class="btn" id="settings" data-i18n="results.settings"></button>
       <button type="button" class="btn" id="menu" data-i18n="results.menu"></button>
     </section>`);
 
+  if (nudge) {
+    app.querySelector('#shuffled').addEventListener('click', () => {
+      const next = { ...settings, learnOrder: 'shuffle' };
+      save(`tables.settings.${profileId}`, next);
+      go(renderPlay, profileId, next);
+    });
+  }
   app.querySelector('#again').addEventListener('click', () => go(renderPlay, profileId, settings));
   app.querySelector('#settings').addEventListener('click', () => go(renderTablesSetup, profileId));
   app.querySelector('#menu').addEventListener('click', () => go(renderLearnerMenu, profileId));

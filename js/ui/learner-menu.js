@@ -6,6 +6,7 @@ import { go } from '../core/router.js';
 import { mount, esc, setPlaying } from './dom.js';
 import { renderHome } from './home.js';
 import { renderTablesSetup } from '../modules/tables/setup.js';
+import { renderTrophyRoom } from './trophy-room.js';
 
 export function renderLearnerMenu(profileId) {
   setPlaying(false);
@@ -38,9 +39,16 @@ export function renderLearnerMenu(profileId) {
           <span class="tile-title" data-i18n="menu.make24"></span>
           <span class="tile-sub" data-i18n="menu.soon"></span>
         </button>
+
+        <button type="button" class="tile tile-trophy" id="tile-trophies">
+          <span class="tile-icon">🏆</span>
+          <span class="tile-title" data-i18n="menu.trophies"></span>
+          <span class="tile-sub" data-i18n="menu.trophiesSub"></span>
+        </button>
       </div>
     </section>`);
 
   app.querySelector('#back').addEventListener('click', () => go(renderHome));
   app.querySelector('#tile-tables').addEventListener('click', () => go(renderTablesSetup, profileId));
+  app.querySelector('#tile-trophies').addEventListener('click', () => go(renderTrophyRoom, profileId));
 }

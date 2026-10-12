@@ -271,3 +271,37 @@ h2 { margin: 0; font-size: 1.5rem; }
 .result-lines p { margin: 4px 0; font-size: 1.2rem; }
 .results .btn { width: 100%; }
 .field[hidden] { display: none; }
+
+/* ---- v0.4: trophy room, badges, nudge ------------------------------ */
+h3 { width: 100%; text-align: left; margin: 16px 0 0; font-size: 1.2rem; }
+.tile-trophy:not(:disabled) { background: var(--orange); }
+
+.badges { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.badge {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 8px; border-radius: var(--radius); background: var(--card);
+  opacity: 0.45; filter: grayscale(1);
+}
+.badge.earned { opacity: 1; filter: none; background: rgba(255, 224, 138, 0.18); border: 2px solid #ffe08a; }
+.badge-icon { font-size: 2.2rem; }
+.badge-name { font-weight: 700; }
+.badge small { color: var(--muted); font-size: 0.8rem; }
+
+.masters { width: 100%; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.master {
+  display: flex; flex-direction: column; align-items: center; padding: 8px 0;
+  border-radius: 12px; background: var(--card); opacity: 0.4; filter: grayscale(1); font-size: 1.5rem;
+}
+.master small { font-size: 0.85rem; font-weight: 700; }
+.master.earned { opacity: 1; filter: none; background: rgba(255, 224, 138, 0.18); }
+
+.records { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.record-row {
+  display: flex; justify-content: space-between; gap: 12px; text-align: left;
+  padding: 10px 12px; border-radius: 12px; background: var(--card);
+}
+.record-row strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.new-badges { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.new-badges .badge { width: 100%; flex-direction: row; justify-content: center; gap: 10px; }
+.nudge { font-size: 1.1rem; font-weight: 600; color: #ffe08a; margin: 8px 0 0; }

@@ -22,6 +22,7 @@ function updateLangButton() {
 async function setupServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
 
+  const hadController = !!navigator.serviceWorker.controller;
   const reg = await navigator.serviceWorker.register('sw.js');
   const banner = document.getElementById('update-banner');
 
@@ -42,10 +43,11 @@ async function setupServiceWorker() {
     });
   });
 
-  // Once the new worker takes over, reload so the new files are used.
+  // Once a NEW worker takes over (after "Update"), reload so the new files are used.
+  // On the very first visit there is no old worker, so nothing to reload.
   let reloading = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
+    if (!hadController || reloading) return;
     reloading = true;
     location.reload();
   });
