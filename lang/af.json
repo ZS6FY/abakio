@@ -5,7 +5,8 @@
   "home": {
     "tagline": "Kom ons oefen wiskunde!",
     "addProfile": "Voeg 'n leerder by",
-    "noProfiles": "Nog geen leerders nie. Voeg een by om te begin."
+    "noProfiles": "Nog geen leerders nie. Voeg een by om te begin.",
+    "removeProfile": "Verwyder leerder"
   },
   "add": {
     "title": "Nuwe leerder",
@@ -128,5 +129,15 @@
     "master": {
       "name": "Meester van ×{n}"
     }
+  },
+  "remove": {
+    "title": "Verwyder leerder",
+    "pick": "Wie moet verwyder word?",
+    "confirmTitle": "Verwyder {name}?",
+    "confirmText": "Al {name} se vordering, rekords en kentekens sal van hierdie toestel uitgevee word.",
+    "cannotUndo": "Dit kan nie ongedaan gemaak word nie.",
+    "typeName": "Tik \"{name}\" om te bevestig:",
+    "confirmBtn": "Verwyder permanent",
+    "cancel": "Kanselleer"
   }
 }

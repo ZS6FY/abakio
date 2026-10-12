@@ -5,7 +5,8 @@
   "home": {
     "tagline": "Let's practise maths!",
     "addProfile": "Add a learner",
-    "noProfiles": "No learners yet. Add one to start."
+    "noProfiles": "No learners yet. Add one to start.",
+    "removeProfile": "Remove a learner"
   },
   "add": {
     "title": "New learner",
@@ -128,5 +129,15 @@
     "master": {
       "name": "Master of ×{n}"
     }
+  },
+  "remove": {
+    "title": "Remove a learner",
+    "pick": "Who must be removed?",
+    "confirmTitle": "Remove {name}?",
+    "confirmText": "All of {name}'s progress, records and badges will be deleted from this device.",
+    "cannotUndo": "This cannot be undone.",
+    "typeName": "Type \"{name}\" to confirm:",
+    "confirmBtn": "Remove permanently",
+    "cancel": "Cancel"
   }
 }

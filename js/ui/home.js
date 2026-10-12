@@ -6,6 +6,7 @@ import { go } from '../core/router.js';
 import { mount, esc, setPlaying } from './dom.js';
 import { renderAddLearner } from './add-learner.js';
 import { renderLearnerMenu } from './learner-menu.js';
+import { renderRemoveLearner } from './remove-learner.js';
 
 export function renderHome() {
   setPlaying(false);
@@ -25,7 +26,10 @@ export function renderHome() {
       <p class="tagline" data-i18n="home.tagline"></p>
       <div class="profile-list">${list}</div>
       <button type="button" class="btn btn-primary" id="add-btn" data-i18n="home.addProfile"></button>
+      ${profiles.length ? '<button type="button" class="btn-link remove-link" id="remove-btn" data-i18n="home.removeProfile"></button>' : ''}
     </section>`);
+
+  app.querySelector('#remove-btn')?.addEventListener('click', () => go(renderRemoveLearner));
 
   app.querySelectorAll('.profile-btn').forEach((btn) => {
     btn.addEventListener('click', () => go(renderLearnerMenu, btn.dataset.id));

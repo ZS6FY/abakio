@@ -47,8 +47,22 @@ export function addProfile(name, grade) {
   return profile;
 }
 
+// Removes a learner AND everything stored for them.
+// Convention: every per-learner key ends in ".<learnerId>"
+// (e.g. "stats.<id>", "best.<id>", "badges.<id>", "tables.settings.<id>"),
+// so new modules are cleaned up automatically if they follow it.
 export function removeProfile(id) {
   save('profiles', getProfiles().filter((p) => p.id !== id));
+  try {
+    const doomed = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(PREFIX) && key.endsWith(`.${id}`)) doomed.push(key);
+    }
+    doomed.forEach((key) => localStorage.removeItem(key));
+  } catch {
+    // storage blocked – nothing more we can do
+  }
 }
 
 // ---- Per-fact results -----------------------------------------------
