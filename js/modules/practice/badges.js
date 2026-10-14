@@ -1,4 +1,6 @@
 // Badges ("kentekens") for the table-based modules.
+// Streak badges (10, 25, 50, 100, 150+ in a row) are earned in ∞ rounds only, on purpose:
+// they are the reward for sticking with the unlimited round.
 // Icons are emoji placeholders until proper badge art is made.
 // All earned badges are stored per learner as { badgeId: 'YYYY-MM-DD' }.
 // Tables badges keep their original ids; missing-number badges start with "missing.".
@@ -14,6 +16,8 @@ export const BADGES = {
     { id: 'streak10', icon: '🔥' },
     { id: 'streak25', icon: '🌋' },
     { id: 'streak50', icon: '🚀' },
+    { id: 'streak100', icon: '💯' },
+    { id: 'streak150', icon: '🌟' },
     { id: 'speedy', icon: '⚡' },
     { id: 'champion', icon: '👑' }
   ],
@@ -22,6 +26,9 @@ export const BADGES = {
     { id: 'missing.perfect', icon: '👁️' },
     { id: 'missing.streak10', icon: '🕵️' },
     { id: 'missing.streak25', icon: '🧠' },
+    { id: 'missing.streak50', icon: '🦉' },
+    { id: 'missing.streak100', icon: '💯' },
+    { id: 'missing.streak150', icon: '🌟' },
     { id: 'missing.speedy', icon: '⚡' },
     { id: 'missing.allRound', icon: '🏆' }
   ]
@@ -58,6 +65,8 @@ const RULES = {
       if (r.streak >= 10) give('streak10');
       if (r.streak >= 25) give('streak25');
       if (r.streak >= 50) give('streak50');
+      if (r.streak >= 100) give('streak100');
+      if (r.streak >= 150) give('streak150');
     }
     if (r.isTimed && r.wrong === 0) {
       if (s.count >= 20 && r.total < TABLES_SPEEDY_MS) give('speedy');
@@ -71,6 +80,9 @@ const RULES = {
     if (r.isStreak) {
       if (r.streak >= 10) give('missing.streak10');
       if (r.streak >= 25) give('missing.streak25');
+      if (r.streak >= 50) give('missing.streak50');
+      if (r.streak >= 100) give('missing.streak100');
+      if (r.streak >= 150) give('missing.streak150');
     }
     if (r.isTimed && r.wrong === 0) {
       if (s.count >= 20 && r.total < MISSING_SPEEDY_MS) give('missing.speedy');

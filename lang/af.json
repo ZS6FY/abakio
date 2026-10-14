@@ -108,15 +108,15 @@
     },
     "streak10": {
       "name": "Op dreef",
-      "how": "Kry 10 reg in 'n ry"
+      "how": "Kry 10 reg in 'n ry in 'n ∞-rondte"
     },
     "streak25": {
       "name": "Vuurwarm",
-      "how": "Kry 25 reg in 'n ry"
+      "how": "Kry 25 reg in 'n ry in 'n ∞-rondte"
     },
     "streak50": {
       "name": "Onkeerbaar",
-      "how": "Kry 50 reg in 'n ry"
+      "how": "Kry 50 reg in 'n ry in 'n ∞-rondte"
     },
     "speedy": {
       "name": "Blitsvinnig",
@@ -140,11 +140,11 @@
       },
       "streak10": {
         "name": "Speurder",
-        "how": "Kry 10 reg in 'n ry"
+        "how": "Kry 10 reg in 'n ry in 'n ∞-rondte"
       },
       "streak25": {
         "name": "Meesterspeurder",
-        "how": "Kry 25 reg in 'n ry"
+        "how": "Kry 25 reg in 'n ry in 'n ∞-rondte"
       },
       "speedy": {
         "name": "Vinnige vingers",
@@ -153,7 +153,27 @@
       "allRound": {
         "name": "Niks kan wegkruip nie",
         "how": "Met Draai om aan: al 12 tafels, 30 vrae, sonder 'n fout"
+      },
+      "streak50": {
+        "name": "Hoofspeurder",
+        "how": "Kry 50 reg in 'n ry in 'n ∞-rondte"
+      },
+      "streak100": {
+        "name": "Speurkampioen",
+        "how": "Kry 100 reg in 'n ry in 'n ∞-rondte"
+      },
+      "streak150": {
+        "name": "Speurlegende",
+        "how": "Kry 150 of meer reg in 'n ry in 'n ∞-rondte"
       }
+    },
+    "streak100": {
+      "name": "Honderdklub",
+      "how": "Kry 100 reg in 'n ry in 'n ∞-rondte"
+    },
+    "streak150": {
+      "name": "Legende",
+      "how": "Kry 150 of meer reg in 'n ry in 'n ∞-rondte"
     }
   },
   "remove": {
@@ -177,7 +197,7 @@
     "which": "Tik op die tafels wat jy wil oefen. Jy kan een tafel kies of soveel as wat jy wil.\n'Almal' kies al 12 tafels en 'Geen' maak almal weer skoon.",
     "turnTables": "Af: die tafelgetal staan altyd agter, bv. 3 × 2.\nAan: die toep vra ook 2 × 3 – dieselfde antwoord, net andersom.",
     "turnMissing": "Af: die tafelgetal bly altyd sigbaar, bv. ? × 2 = 6 of 6 ÷ ? = 2.\nAan: die ? kan ook op ander plekke wegkruip, bv. 3 × ? = 6 of ? ÷ 2 = 3.",
-    "count": "10, 20 of 30: soveel vrae, so vinnig as wat jy kan.\n∞: Hou aan solank jy reg antwoord. Die eerste fout eindig die rondte. Hoeveel kry jy in 'n ry?"
+    "count": "10, 20 of 30: soveel vrae, so vinnig as wat jy kan.\n∞: Hou aan solank jy reg antwoord. Die eerste fout eindig die rondte. Hoeveel kry jy in 'n ry? Daar is kentekens vir 10, 25, 50, 100 en 150 reg in 'n ry!"
   },
   "help": {
     "link": "Hoe werk dit?",

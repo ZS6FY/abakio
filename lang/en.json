@@ -108,15 +108,15 @@
     },
     "streak10": {
       "name": "On a roll",
-      "how": "Get 10 right in a row"
+      "how": "Get 10 right in a row in an ∞ round"
     },
     "streak25": {
       "name": "Red hot",
-      "how": "Get 25 right in a row"
+      "how": "Get 25 right in a row in an ∞ round"
     },
     "streak50": {
       "name": "Unstoppable",
-      "how": "Get 50 right in a row"
+      "how": "Get 50 right in a row in an ∞ round"
     },
     "speedy": {
       "name": "Lightning fast",
@@ -140,11 +140,11 @@
       },
       "streak10": {
         "name": "Detective",
-        "how": "Get 10 right in a row"
+        "how": "Get 10 right in a row in an ∞ round"
       },
       "streak25": {
         "name": "Master detective",
-        "how": "Get 25 right in a row"
+        "how": "Get 25 right in a row in an ∞ round"
       },
       "speedy": {
         "name": "Quick fingers",
@@ -153,7 +153,27 @@
       "allRound": {
         "name": "Nothing can hide",
         "how": "With Turnaround on: all 12 tables, 30 questions, without a mistake"
+      },
+      "streak50": {
+        "name": "Chief detective",
+        "how": "Get 50 right in a row in an ∞ round"
+      },
+      "streak100": {
+        "name": "Detective champion",
+        "how": "Get 100 right in a row in an ∞ round"
+      },
+      "streak150": {
+        "name": "Detective legend",
+        "how": "Get 150 or more right in a row in an ∞ round"
       }
+    },
+    "streak100": {
+      "name": "Hundred club",
+      "how": "Get 100 right in a row in an ∞ round"
+    },
+    "streak150": {
+      "name": "Legend",
+      "how": "Get 150 or more right in a row in an ∞ round"
     }
   },
   "remove": {
@@ -177,7 +197,7 @@
     "which": "Tap the tables you want to practise. You can choose one table or as many as you like.\n'All' picks all 12 tables and 'None' clears them again.",
     "turnTables": "Off: the table number is always second, e.g. 3 × 2.\nOn: the app also asks 2 × 3 – the same answer, just the other way round.",
     "turnMissing": "Off: the table number always stays visible, e.g. ? × 2 = 6 or 6 ÷ ? = 2.\nOn: the ? can also hide in other places, e.g. 3 × ? = 6 or ? ÷ 2 = 3.",
-    "count": "10, 20 or 30: that many questions, as fast as you can.\n∞: Keep going as long as you answer correctly. The first mistake ends the round. How many can you get in a row?"
+    "count": "10, 20 or 30: that many questions, as fast as you can.\n∞: Keep going as long as you answer correctly. The first mistake ends the round. How many can you get in a row? There are badges for 10, 25, 50, 100 and 150 in a row!"
   },
   "help": {
     "link": "How does it work?",
