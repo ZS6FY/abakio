@@ -45,10 +45,8 @@
     "pickOne": "Choose at least one table.",
     "start": "Start!",
     "turn": "Turnaround",
-    "turnHint": "Also ask 2 × 3 when practising 3 × 2",
     "on": "On",
     "off": "Off",
-    "learnHint": "Tables are practised in order: 1 × 2, 2 × 2, 3 × 2 …",
     "order": "Order",
     "inOrder": "In order",
     "shuffled": "Shuffled"
@@ -57,7 +55,8 @@
     "next": "Next",
     "penalty": "+3 seconds",
     "quitConfirm": "Do you want to stop?",
-    "review": "Let's practise these again"
+    "review": "Let's practise these again",
+    "almost": "Almost!"
   },
   "results": {
     "wellDone": "Well done!",
@@ -168,8 +167,22 @@
     "cancel": "Cancel"
   },
   "missing": {
-    "title": "Missing numbers",
-    "learnHint": "Practised in order: ? × 2 = 2, ? × 2 = 4, ? × 2 = 6 …",
-    "turnHint": "The ? can also hide in other places, e.g. 6 × ? = 12 and ? ÷ 2 = 6"
+    "title": "Missing numbers"
+  },
+  "info": {
+    "label": "More information",
+    "mode": "Learn: No clock. If you make a mistake, the app shows the right answer and asks that sum again later.\nPlay: The clock runs. Each mistake adds 3 seconds to your time. After a mistake the clock stops for 3 seconds so you can see the right answer. Try to beat your best time!",
+    "order": "In order: 1 × 2, 2 × 2, 3 × 2 … the way you say the table.\nShuffled: The same sums, but mixed up. Now you have to know each answer, not just the rhyme.",
+    "op": "Times ×: only times sums, e.g. 3 × 2 = 6.\nDivide ÷: only division sums, e.g. 6 ÷ 2 = 3.\nMixed: times and division together. They belong together: if you know 3 × 2 = 6, you also know 6 ÷ 2 = 3.",
+    "which": "Tap the tables you want to practise. You can choose one table or as many as you like.\n'All' picks all 12 tables and 'None' clears them again.",
+    "turnTables": "Off: the table number is always second, e.g. 3 × 2.\nOn: the app also asks 2 × 3 – the same answer, just the other way round.",
+    "turnMissing": "Off: the table number always stays visible, e.g. ? × 2 = 6 or 6 ÷ ? = 2.\nOn: the ? can also hide in other places, e.g. 3 × ? = 6 or ? ÷ 2 = 3.",
+    "count": "10, 20 or 30: that many questions, as fast as you can.\n∞: Keep going as long as you answer correctly. The first mistake ends the round. How many can you get in a row?"
+  },
+  "help": {
+    "link": "How does it work?",
+    "title": "How does it work?",
+    "parents": "For parents: sit with younger children the first few times they use the app. That way you both learn how it works.\nTap the i next to each choice for a short explanation.",
+    "back": "Back to the choices"
   }
 }

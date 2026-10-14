@@ -5,7 +5,6 @@ import { makeMissingQuestion } from './questions.js';
 export const MISSING = {
   id: 'missing',
   title: 'missing.title',
-  learnHint: 'missing.learnHint',
-  turnHint: 'missing.turnHint',
+  turnInfo: 'info.turnMissing',
   makeQuestion: makeMissingQuestion
 };

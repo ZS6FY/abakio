@@ -20,6 +20,9 @@ import {
 } from '../tables/questions.js';
 
 const PENALTY_MS = 3000;
+// Speel (10/20/30): after a mistake the horlosie stops and the correct sum stays
+// on screen this long, then the next question appears by itself.
+const MISTAKE_PAUSE_MS = 3000;
 const MAX_REVIEWS = 2; // learn mode: missed facts come back at most twice
 
 export function renderPlay(profileId, settings, mod) {
@@ -52,6 +55,8 @@ export function renderPlay(profileId, settings, mod) {
   let penalty = 0;
   let qStart = 0;
   const startTime = performance.now();
+  let pausedMs = 0;      // total time the horlosie stood still
+  let pauseStart = null; // set while the horlosie is stopped
   let timerId = null;
   let pending = null;
 
@@ -70,7 +75,12 @@ export function renderPlay(profileId, settings, mod) {
 
   const el = (id) => app.querySelector(`#${id}`);
 
-  const elapsed = () => performance.now() - startTime + penalty;
+  const elapsed = () => (pauseStart ?? performance.now()) - startTime - pausedMs + penalty;
+  const pauseClock = () => { pauseStart = performance.now(); };
+  const resumeClock = () => {
+    if (pauseStart !== null) pausedMs += performance.now() - pauseStart;
+    pauseStart = null;
+  };
 
   if (isTimed) {
     timerId = setInterval(() => { el('timer').textContent = formatSeconds(elapsed()); }, 100);
@@ -94,6 +104,7 @@ export function renderPlay(profileId, settings, mod) {
     locked = false;
 
     el('question').textContent = q.display;
+    el('question').classList.remove('reveal');
     el('feedback').textContent = note;
     el('next').hidden = true;
     el('answers').innerHTML = q.options
@@ -128,20 +139,30 @@ export function renderPlay(profileId, settings, mod) {
 
     wrong++;
     if (isLearn) {
-      // Show the full fact, keep it for the review at the end, wait for "Next".
-      el('feedback').textContent = q.full;
+      // Show the full sum big, keep it for the review at the end, wait for "Volgende".
+      showCorrectSum(t('play.almost'));
       const same = (f) => factKey(f) === factKey(q.fact) && f.turn === q.fact.turn;
       if (!missed.some(same)) missed.push(q.fact);
       el('next').hidden = false;
     } else if (isTimed) {
+      // Stop the horlosie, add the penalty, let the child see the right sum calmly.
+      pauseClock();
       penalty += PENALTY_MS;
-      el('feedback').textContent = t('play.penalty');
-      later(next, 900);
+      el('timer').textContent = formatSeconds(elapsed());
+      showCorrectSum(`${t('play.almost')}  ${t('play.penalty')}`);
+      later(() => { resumeClock(); next(); }, MISTAKE_PAUSE_MS);
     } else {
       // Unlimited round ends on the first mistake.
       el('feedback').textContent = t('results.oops', { a: q.answer });
       later(finish, 1500);
     }
+  }
+
+  // Replace the question with the completed sum, e.g. "7 × 8 = 56".
+  function showCorrectSum(message) {
+    el('question').textContent = q.full;
+    el('question').classList.add('reveal');
+    el('feedback').textContent = message;
   }
 
   function next() {

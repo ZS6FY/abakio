@@ -322,3 +322,56 @@ h3 { width: 100%; text-align: left; margin: 16px 0 0; font-size: 1.2rem; }
 .trophy-section { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .trophy-section h3 { border-bottom: 2px solid var(--card); padding-bottom: 4px; }
 h4 { width: 100%; text-align: left; margin: 10px 0 0; font-size: 1.05rem; color: var(--muted); }
+
+/* ---- v0.7: info tags, help page, calm mistakes ---------------------- */
+.field-label { display: inline-flex; align-items: center; gap: 8px; }
+
+.info-btn {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-style: italic;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.info-btn.on { background: #ffe08a; border-color: #ffe08a; color: var(--bg-1); }
+
+.info-card {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 224, 138, 0.14);
+  border-left: 4px solid #ffe08a;
+}
+.info-card[hidden] { display: none; }
+.info-card p { margin: 4px 0; }
+
+.help-link { align-self: flex-end; font-size: 1rem; }
+
+.help .parent-note {
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: rgba(31, 181, 166, 0.25);
+}
+.help .parent-note p, .help-section p { margin: 6px 0; line-height: 1.45; }
+.help-section { width: 100%; text-align: left; }
+
+/* The completed sum after a mistake */
+.question.reveal { color: #8ff0b0; }
+
+/* Wrong answer: a calm amber instead of a harsh red */
+.ans.bad { background: #e8a33d; color: #fff; border-color: #fff; }
+
+/* Solid colour under the gradient, for browsers that don't support fixed backgrounds */
+html { background: var(--bg-2); }

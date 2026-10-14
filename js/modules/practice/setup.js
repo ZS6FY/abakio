@@ -7,6 +7,8 @@ import { go } from '../../core/router.js';
 import { mount, setPlaying } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
 import { renderPlay } from './play.js';
+import { infoTag, infoCard, wireInfo } from '../../ui/info.js';
+import { renderHelp } from './help.js';
 
 const DEFAULTS = { mode: 'learn', learnOrder: 'order', op: 'mul', tables: [2, 3, 4, 5], count: 10 };
 
@@ -46,8 +48,11 @@ export function renderSetup(profileId, mod) {
         <span></span>
       </div>
 
+      <button type="button" class="btn-link help-link" id="help-link" data-i18n="help.link"></button>
+
       <div class="field">
-        <span data-i18n="tables.mode"></span>
+        <span class="field-label"><span data-i18n="tables.mode"></span>${infoTag('mode')}</span>
+        ${infoCard('mode', 'info.mode')}
         <div class="seg">${seg('mode', [
           ['learn', 'tables.learn', 'tables.learnSub'],
           ['game', 'tables.game', 'tables.gameSub']
@@ -55,7 +60,8 @@ export function renderSetup(profileId, mod) {
       </div>
 
       <div class="field" id="order-field">
-        <span data-i18n="tables.order"></span>
+        <span class="field-label"><span data-i18n="tables.order"></span>${infoTag('order')}</span>
+        ${infoCard('order', 'info.order')}
         <div class="seg">${seg('order', [
           ['order', 'tables.inOrder'],
           ['shuffle', 'tables.shuffled']
@@ -63,7 +69,8 @@ export function renderSetup(profileId, mod) {
       </div>
 
       <div class="field">
-        <span data-i18n="tables.op"></span>
+        <span class="field-label"><span data-i18n="tables.op"></span>${infoTag('op')}</span>
+        ${infoCard('op', 'info.op')}
         <div class="seg">${seg('op', [
           ['mul', 'tables.mul'],
           ['div', 'tables.div'],
@@ -73,26 +80,28 @@ export function renderSetup(profileId, mod) {
 
       <div class="field">
         <div class="field-head">
-          <span data-i18n="tables.which"></span>
+          <span class="field-label"><span data-i18n="tables.which"></span>${infoTag('which')}</span>
           <span>
             <button type="button" class="btn-link" id="all" data-i18n="tables.all"></button>
             <button type="button" class="btn-link" id="none" data-i18n="tables.none"></button>
           </span>
         </div>
+        ${infoCard('which', 'info.which')}
         <div class="chips">${tableChips}</div>
       </div>
 
       <div class="field">
-        <span data-i18n="tables.turn"></span>
+        <span class="field-label"><span data-i18n="tables.turn"></span>${infoTag('turn')}</span>
+        ${infoCard('turn', mod.turnInfo)}
         <div class="seg">${seg('turn', [
           ['off', 'tables.off'],
           ['on', 'tables.on']
         ])}</div>
-        <small class="hint" data-i18n="${mod.turnHint}"></small>
       </div>
 
       <div class="field" id="count-field">
-        <span data-i18n="tables.count"></span>
+        <span class="field-label"><span data-i18n="tables.count"></span>${infoTag('count')}</span>
+        ${infoCard('count', 'info.count')}
         <div class="seg">
           <button type="button" class="seg-btn" data-count="10">10</button>
           <button type="button" class="seg-btn" data-count="20">20</button>
@@ -102,7 +111,6 @@ export function renderSetup(profileId, mod) {
         <small class="hint" id="inf-hint" data-i18n="tables.unlimitedHint"></small>
       </div>
 
-      <small class="hint" id="learn-hint" data-i18n="${mod.learnHint}"></small>
 
       <p class="error" id="error" hidden data-i18n="tables.pickOne"></p>
       <button type="button" class="btn btn-primary" id="start" data-i18n="tables.start"></button>
@@ -127,7 +135,6 @@ export function renderSetup(profileId, mod) {
     app.querySelector('#order-field').hidden = s.mode !== 'learn';
     app.querySelectorAll('[data-order]').forEach((b) =>
       b.classList.toggle('on', b.dataset.order === s.learnOrder));
-    app.querySelector('#learn-hint').hidden = !(s.mode === 'learn' && s.learnOrder === 'order');
     app.querySelector('#error').hidden = true;
   };
 
@@ -158,6 +165,10 @@ export function renderSetup(profileId, mod) {
   app.querySelector('#none').addEventListener('click', () => { s.tables = []; refresh(); });
 
   app.querySelector('#back').addEventListener('click', () => go(renderLearnerMenu, profileId));
+  // The help page shows the choices as they are now, so keep unsaved changes.
+  const openHelp = () => { save(`${mod.id}.settings.${profileId}`, s); go(renderHelp, profileId, mod); };
+  app.querySelector('#help-link').addEventListener('click', openHelp);
+  wireInfo(app, `${mod.id}.setup`, profileId);
   app.querySelector('#start').addEventListener('click', () => {
     if (s.tables.length === 0) {
       app.querySelector('#error').hidden = false;
