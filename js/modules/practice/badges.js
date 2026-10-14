@@ -9,6 +9,17 @@ import { load, save } from '../../core/storage.js';
 import { t } from '../../core/i18n.js';
 
 export const BADGES = {
+  make: [
+    { id: 'make.first', icon: '🧱' },
+    { id: 'make.perfect', icon: '🎯' },
+    { id: 'make.streak10', icon: '🐞' },
+    { id: 'make.streak25', icon: '🐝' },
+    { id: 'make.streak50', icon: '🦋' },
+    { id: 'make.streak100', icon: '💯' },
+    { id: 'make.streak150', icon: '🌟' },
+    { id: 'make.speedy', icon: '🐇' },
+    { id: 'make.cards', icon: '🃏' }
+  ],
   tables: [
     { id: 'first', icon: '👣' },
     { id: 'perfectLearn', icon: '✨' },
@@ -37,6 +48,7 @@ export const BADGES = {
 export const MASTER_ICON = '🏅';
 const TABLES_SPEEDY_MS = 60000;
 const MISSING_SPEEDY_MS = 75000; // missing numbers take a little longer to read
+const MAKE_SPEEDY_MS = 90000;    // young learners, and the pictures take time to look at
 
 export function getEarned(profileId) {
   return load(`badges.${profileId}`, {});
@@ -49,7 +61,7 @@ export function badgeName(id) {
 
 export function badgeIcon(id) {
   if (id.startsWith('master')) return MASTER_ICON;
-  const all = [...BADGES.tables, ...BADGES.missing];
+  const all = Object.values(BADGES).flat();
   return all.find((b) => b.id === id)?.icon ?? '🏆';
 }
 
@@ -72,6 +84,21 @@ const RULES = {
       if (s.count >= 20 && r.total < TABLES_SPEEDY_MS) give('speedy');
       if (s.tables.length === 12 && s.count === 30) give('champion');
       if (s.tables.length === 1 && s.count >= 20) give(`master${s.tables[0]}`);
+    }
+  },
+  make(give, s, r) {
+    give('make.first');
+    if (r.isLearn && r.wrong === 0) give('make.perfect');
+    if (r.isStreak) {
+      if (r.streak >= 10) give('make.streak10');
+      if (r.streak >= 25) give('make.streak25');
+      if (r.streak >= 50) give('make.streak50');
+      if (r.streak >= 100) give('make.streak100');
+      if (r.streak >= 150) give('make.streak150');
+    }
+    if (r.isTimed && r.wrong === 0 && s.count >= 20) {
+      if (r.total < MAKE_SPEEDY_MS) give('make.speedy');
+      if (s.step === 'pick3') give('make.cards');
     }
   },
   missing(give, s, r) {

@@ -11,7 +11,7 @@ export function renderHelp(profileId, mod) {
   setPlaying(false);
   if (!getProfile(profileId)) return;
 
-  const sections = [
+  const sections = mod.helpSections ?? [
     ['tables.mode', 'info.mode'],
     ['tables.order', 'info.order'],
     ['tables.op', 'info.op'],
@@ -41,7 +41,7 @@ export function renderHelp(profileId, mod) {
       <button type="button" class="btn btn-primary" id="done" data-i18n="help.back"></button>
     </section>`);
 
-  const back = () => go(renderSetup, profileId, mod);
+  const back = () => go(mod.setup ?? renderSetup, profileId, mod);
   app.querySelector('#back').addEventListener('click', back);
   app.querySelector('#done').addEventListener('click', back);
 }

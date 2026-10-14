@@ -15,14 +15,15 @@ import { go, onLeave } from '../../core/router.js';
 import { mount, setPlaying, formatSeconds, esc } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
 import { renderSetup } from './setup.js';
+import { showPauseBar, clearPauseBar } from '../../ui/pause-bar.js';
 import {
   buildPool, buildRound, buildLearnRound, randomFact, withTurn, factKey
 } from '../tables/questions.js';
 
-const PENALTY_MS = 3000;
+export const PENALTY_MS = 3000;
 // Speel (10/20/30): after a mistake the horlosie stops and the correct sum stays
 // on screen this long, then the next question appears by itself.
-const MISTAKE_PAUSE_MS = 3000;
+export const MISTAKE_PAUSE_MS = 3000;
 const MAX_REVIEWS = 2; // learn mode: missed facts come back at most twice
 
 export function renderPlay(profileId, settings, mod) {
@@ -69,6 +70,7 @@ export function renderPlay(profileId, settings, mod) {
       </div>
       <div class="question" id="question"></div>
       <div class="feedback" id="feedback"></div>
+      <div class="pause-slot" id="pause"></div>
       <div class="answers" id="answers"></div>
       <button type="button" class="btn btn-primary" id="next" hidden data-i18n="play.next"></button>
     </section>`);
@@ -107,6 +109,7 @@ export function renderPlay(profileId, settings, mod) {
     el('question').classList.remove('reveal');
     el('feedback').textContent = note;
     el('next').hidden = true;
+    clearPauseBar(el('pause'));
     el('answers').innerHTML = q.options
       .map((n) => `<button type="button" class="ans" data-value="${n}">${n}</button>`)
       .join('');
@@ -150,6 +153,7 @@ export function renderPlay(profileId, settings, mod) {
       penalty += PENALTY_MS;
       el('timer').textContent = formatSeconds(elapsed());
       showCorrectSum(`${t('play.almost')}  ${t('play.penalty')}`);
+      showPauseBar(el('pause'), MISTAKE_PAUSE_MS);
       later(() => { resumeClock(); next(); }, MISTAKE_PAUSE_MS);
     } else {
       // Unlimited round ends on the first mistake.
@@ -195,10 +199,15 @@ export function renderPlay(profileId, settings, mod) {
 }
 
 function bestKey(s, mod) {
+  if (mod.bestKey) return mod.bestKey(s);
   return `${mod.id}|${s.mode}|${s.op}|${s.count}|${s.turnaround ? 'turn' : 'fixed'}|${s.tables.join(',')}`;
 }
 
-function renderResults(profileId, settings, mod, r) {
+// Shared results screen. Modules with their own play/setup screens pass them
+// in their config as mod.play and mod.setup.
+export function renderResults(profileId, settings, mod, r) {
+  const playFn = mod.play ?? renderPlay;
+  const setupFn = mod.setup ?? renderSetup;
   setPlaying(false);
   const lines = [];
   let stars = '';
@@ -238,7 +247,7 @@ function renderResults(profileId, settings, mod, r) {
     : '';
 
   // A perfect round in order: suggest the shuffled version next (a nudge, not a gate).
-  const nudge = r.isLearn && r.wrong === 0 && settings.learnOrder !== 'shuffle';
+  const nudge = r.isLearn && r.wrong === 0 && 'learnOrder' in settings && settings.learnOrder !== 'shuffle';
 
   const app = mount(`
     <section class="screen results">
@@ -260,10 +269,10 @@ function renderResults(profileId, settings, mod, r) {
     app.querySelector('#shuffled').addEventListener('click', () => {
       const next = { ...settings, learnOrder: 'shuffle' };
       save(`${mod.id}.settings.${profileId}`, next);
-      go(renderPlay, profileId, next, mod);
+      go(playFn, profileId, next, mod);
     });
   }
-  app.querySelector('#again').addEventListener('click', () => go(renderPlay, profileId, settings, mod));
-  app.querySelector('#settings').addEventListener('click', () => go(renderSetup, profileId, mod));
+  app.querySelector('#again').addEventListener('click', () => go(playFn, profileId, settings, mod));
+  app.querySelector('#settings').addEventListener('click', () => go(setupFn, profileId, mod));
   app.querySelector('#menu').addEventListener('click', () => go(renderLearnerMenu, profileId));
 }

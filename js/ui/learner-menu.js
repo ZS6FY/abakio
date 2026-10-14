@@ -8,6 +8,7 @@ import { renderHome } from './home.js';
 import { renderSetup } from '../modules/practice/setup.js';
 import { TABLES } from '../modules/tables/module.js';
 import { MISSING } from '../modules/missing/module.js';
+import { MAKE } from '../modules/make/module.js';
 import { renderTrophyRoom } from './trophy-room.js';
 
 export function renderLearnerMenu(profileId) {
@@ -24,6 +25,12 @@ export function renderLearnerMenu(profileId) {
       </div>
 
       <div class="tiles">
+        <button type="button" class="tile" id="tile-make">
+          <span class="tile-icon">□+□</span>
+          <span class="tile-title" data-i18n="menu.make"></span>
+          <span class="tile-sub" data-i18n="menu.makeSub"></span>
+        </button>
+
         <button type="button" class="tile" id="tile-tables">
           <span class="tile-icon">×÷</span>
           <span class="tile-title" data-i18n="menu.tables"></span>
@@ -42,7 +49,7 @@ export function renderLearnerMenu(profileId) {
           <span class="tile-sub" data-i18n="menu.soon"></span>
         </button>
 
-        <button type="button" class="tile tile-trophy" id="tile-trophies">
+        <button type="button" class="tile tile-trophy tile-wide" id="tile-trophies">
           <span class="tile-icon">🏆</span>
           <span class="tile-title" data-i18n="menu.trophies"></span>
           <span class="tile-sub" data-i18n="menu.trophiesSub"></span>
@@ -53,5 +60,6 @@ export function renderLearnerMenu(profileId) {
   app.querySelector('#back').addEventListener('click', () => go(renderHome));
   app.querySelector('#tile-tables').addEventListener('click', () => go(renderSetup, profileId, TABLES));
   app.querySelector('#tile-missing').addEventListener('click', () => go(renderSetup, profileId, MISSING));
+  app.querySelector('#tile-make').addEventListener('click', () => go(MAKE.setup, profileId, MAKE));
   app.querySelector('#tile-trophies').addEventListener('click', () => go(renderTrophyRoom, profileId));
 }

@@ -8,6 +8,7 @@ import { renderLearnerMenu } from './learner-menu.js';
 import { BADGES, MASTER_ICON, getEarned, badgeName } from '../modules/practice/badges.js';
 
 const MODULES = [
+  { id: 'make', title: 'make.title' },
   { id: 'tables', title: 'tables.title' },
   { id: 'missing', title: 'missing.title' }
 ];
@@ -27,6 +28,31 @@ function badgeCard(b, earnedOn) {
     </div>`;
 }
 
+// "5,6,7,8,10" → "5–8, 10"
+function compactRange(list) {
+  const nums = list.split(',').map(Number);
+  const out = [];
+  let start = nums[0];
+  for (let i = 1; i <= nums.length; i++) {
+    if (nums[i] !== nums[i - 1] + 1) {
+      out.push(start === nums[i - 1] ? `${start}` : `${start}–${nums[i - 1]}`);
+      start = nums[i];
+    }
+  }
+  return out.join(', ');
+}
+
+// Maak 'n getal records: "make|mode|op|count|step|targets"
+function makeWhat([, , op, count, step, targets]) {
+  const opLabel = { add: t('make.add'), sub: t('make.sub'), mix: t('tables.mix') };
+  const stepLabel = step === 'sum' ? t(`make.stepSum.${op}`)
+    : t({ bond: 'make.stepBond', pick2: 'make.stepPick2', pick3: 'make.stepPick3' }[step]);
+  return [
+    count === 'inf' ? t('rec.unlimited') : t('rec.questions', { n: count }),
+    stepLabel, opLabel[op] ?? op, compactRange(targets)
+  ].join(' · ');
+}
+
 // Records are stored under keys like "tables|game|mul|20|fixed|2,3,4".
 function recordRows(profileId, moduleId) {
   const best = load(`best.${profileId}`, {});
@@ -39,7 +65,7 @@ function recordRows(profileId, moduleId) {
     .map(({ parts, value }) => {
       const [, , op, count, turn, tables] = parts;
       const isStreak = count === 'inf';
-      const what = [
+      const what = moduleId === 'make' ? makeWhat(parts) : [
         isStreak ? t('rec.unlimited') : t('rec.questions', { n: count }),
         opLabel[op] ?? op,
         tables.split(',').map((n) => `×${n}`).join(' '),

@@ -20,11 +20,13 @@
     "tables": "Times tables",
     "tablesSub": "Learn and play",
     "missing": "Missing numbers",
-    "make24": "Make 10 / 24",
+    "make24": "Make 24",
     "soon": "Coming soon",
     "trophies": "Trophy room",
     "trophiesSub": "Your records and badges",
-    "missingSub": "Find the hidden number"
+    "missingSub": "Find the hidden number",
+    "make": "Make a number",
+    "makeSub": "Plus and minus"
   },
   "tables": {
     "title": "Times tables",
@@ -56,7 +58,8 @@
     "penalty": "+3 seconds",
     "quitConfirm": "Do you want to stop?",
     "review": "Let's practise these again",
-    "almost": "Almost!"
+    "almost": "Almost!",
+    "ready": "Get ready…"
   },
   "results": {
     "wellDone": "Well done!",
@@ -174,6 +177,44 @@
     "streak150": {
       "name": "Legend",
       "how": "Get 150 or more right in a row in an ∞ round"
+    },
+    "make": {
+      "first": {
+        "name": "First building block",
+        "how": "Finish your first Make a number round"
+      },
+      "perfect": {
+        "name": "Bull's-eye",
+        "how": "Finish a Learn round without a mistake"
+      },
+      "streak10": {
+        "name": "Off to a good start",
+        "how": "Get 10 right in a row in an ∞ round"
+      },
+      "streak25": {
+        "name": "Number hero",
+        "how": "Get 25 right in a row in an ∞ round"
+      },
+      "streak50": {
+        "name": "Number star",
+        "how": "Get 50 right in a row in an ∞ round"
+      },
+      "streak100": {
+        "name": "Number champion",
+        "how": "Get 100 right in a row in an ∞ round"
+      },
+      "streak150": {
+        "name": "Number legend",
+        "how": "Get 150 or more right in a row in an ∞ round"
+      },
+      "speedy": {
+        "name": "Nimble",
+        "how": "Answer 20 questions in under 90 seconds without a mistake"
+      },
+      "cards": {
+        "name": "Card expert",
+        "how": "Play Pick three in Play mode, 20 or 30 questions, without a mistake"
+      }
     }
   },
   "remove": {
@@ -197,12 +238,40 @@
     "which": "Tap the tables you want to practise. You can choose one table or as many as you like.\n'All' picks all 12 tables and 'None' clears them again.",
     "turnTables": "Off: the table number is always second, e.g. 3 × 2.\nOn: the app also asks 2 × 3 – the same answer, just the other way round.",
     "turnMissing": "Off: the table number always stays visible, e.g. ? × 2 = 6 or 6 ÷ ? = 2.\nOn: the ? can also hide in other places, e.g. 3 × ? = 6 or ? ÷ 2 = 3.",
-    "count": "10, 20 or 30: that many questions, as fast as you can.\n∞: Keep going as long as you answer correctly. The first mistake ends the round. How many can you get in a row? There are badges for 10, 25, 50, 100 and 150 in a row!"
+    "count": "10, 20 or 30: that many questions, as fast as you can.\n∞: Keep going as long as you answer correctly. The first mistake ends the round. How many can you get in a row? There are badges for 10, 25, 50, 100 and 150 in a row!",
+    "makeStep": "Add up / What's left: an ordinary sum like 6 + 3 = □ or 9 − 5 = □. Choose the answer from three numbers.\nNumber friends: part of the sum is missing, like 6 + □ = 9. Which number is 6's friend to make 9? Choose this when your child is ready for it.\nPick two: three cards are on the table. Tap the two cards that make the number together.\nPick three: four cards are on the table. Tap the three cards that make the number together.\nWith minus you take the smaller cards away from the biggest.",
+    "makeOp": "Plus +: add together, e.g. 6 + 3 = 9.\nMinus −: take away, e.g. 9 − 5 = 4. How many are left?\nMixed: plus and minus sums together.",
+    "makeTargets": "Choose the numbers you want to practise.\nIn plus sums it is the answer (6 + 3 = 9). In minus sums the sum starts with this number (9 − 5 = 4).\nIn Pick two and Pick three it is the number you must make with the cards.",
+    "makePictures": "On: each number gets its own shapes – hearts, triangles, stars – in rows of 5. That way you can see and count.\nAfter a mistake: the pictures only show when an answer was wrong, to help understand.\nOff: numbers only."
   },
   "help": {
     "link": "How does it work?",
     "title": "How does it work?",
     "parents": "For parents: sit with younger children the first few times they use the app. That way you both learn how it works.\nTap the i next to each choice for a short explanation.",
     "back": "Back to the choices"
+  },
+  "make": {
+    "title": "Make a number",
+    "step": "Which game?",
+    "stepSum": {
+      "add": "Add up",
+      "sub": "What's left",
+      "mix": "Add up / What's left"
+    },
+    "stepBond": "Number friends",
+    "stepPick2": "Pick two",
+    "stepPick3": "Pick three",
+    "add": "Plus +",
+    "sub": "Minus −",
+    "targets": "Which numbers?",
+    "pictures": "Pictures",
+    "picsOn": "On",
+    "picsHelp": "After a mistake",
+    "picsOff": "Off",
+    "pickOne": "Choose at least one number.",
+    "make": "Make {n}",
+    "tap2": "Tap two cards.",
+    "tap3": "Tap three cards.",
+    "made": "{sum}, not {target}."
   }
 }
