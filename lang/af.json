@@ -26,7 +26,8 @@
     "trophiesSub": "Jou rekords en kentekens",
     "missingSub": "Vind die versteekte getal",
     "make": "Maak 'n getal",
-    "makeSub": "Plus en minus"
+    "makeSub": "Plus en minus",
+    "make24Sub": "Maak 24 met vier getalle"
   },
   "tables": {
     "title": "Maaltafels",
@@ -242,7 +243,10 @@
     "makeStep": "Tel saam / Wat bly oor: 'n gewone som soos 6 + 3 = □ of 9 − 5 = □. Kies die antwoord uit drie getalle.\nMaatjies: 'n deel van die som ontbreek, soos 6 + □ = 9. Watter getal is 6 se maatjie om 9 te maak? Kies dit wanneer jou kind gereed is daarvoor.\nKies twee: daar lê drie kaarte. Tik op die twee kaarte wat saam die getal maak.\nKies drie: daar lê vier kaarte. Tik op die drie kaarte wat saam die getal maak.\nBy minus trek jy die kleiner kaarte van die grootste af.",
     "makeOp": "Plus +: tel bymekaar, bv. 6 + 3 = 9.\nMinus −: neem weg, bv. 9 − 5 = 4. Hoeveel bly oor?\nGemeng: plus- en minussomme deurmekaar.",
     "makeTargets": "Kies die getalle waarmee jy wil oefen.\nBy plussomme is dit die antwoord (6 + 3 = 9). By minussomme begin die som met hierdie getal (9 − 5 = 4).\nBy Kies twee en Kies drie is dit die getal wat jy met die kaarte moet maak.",
-    "makePictures": "Aan: elke getal kry sy eie vormpies – hartjies, driehoeke, sterre – in rye van 5. So kan jy sien en tel.\nNá 'n fout: die prentjies wys net as 'n antwoord verkeerd was, om te help verstaan.\nAf: net getalle."
+    "makePictures": "Aan: elke getal kry sy eie vormpies – hartjies, driehoeke, sterre – in rye van 5. So kan jy sien en tel.\nNá 'n fout: die prentjies wys net as 'n antwoord verkeerd was, om te help verstaan.\nAf: net getalle.",
+    "make24How": "Jy kry vier getalle. Gebruik elke getal een keer en maak 24.\nTik 'n getal, dan +, −, × of ÷, en dan 'n tweede getal. Die twee getalle word een nuwe getal. Die som verskyn onder die kaart.\nGaan so aan totdat net een getal oor is. Is dit 24? Dan het jy dit reg!\nNet heelgetalle: 'n deelsom moet presies opgaan en jy kan nie onder 0 trek nie.\nOntdoen vat die laaste stap terug. Begin oor begin van voor af met dieselfde kaart. Wys my wys die maklikste manier, een stap op 'n slag. Slaan oor bring 'n ander kaart – die kaart kom later weer.",
+    "make24Level": "Elke kaart het een, twee of drie kolletjies in die hoeke.\nEen kolletjie: die maklikste kaarte.\nTwee kolletjies: 'n bietjie moeiliker.\nDrie kolletjies: die moeilikste kaarte. Hier help dit dikwels om te deel (÷) of met groot getalle te werk.",
+    "make24Big": "Nee: die getalle op die kaart is van 1 tot 9.\nJa: die kaart kan ook getalle tot 20 hê, met altyd minstens een getal groter as 9. Dit is moeiliker.\nDie eerste keer wat jy Ja kies, neem dit 'n oomblik om die kaarte te skommel."
   },
   "help": {
     "link": "Hoe werk dit?",
@@ -273,5 +277,27 @@
     "tap2": "Tik op twee kaarte.",
     "tap3": "Tik op drie kaarte.",
     "made": "{sum}, nie {target} nie."
+  },
+  "make24": {
+    "title": "Maak 24",
+    "howTitle": "Hoe speel jy?",
+    "difficulty": "Moeilikheid",
+    "big": "Getalle groter as 9?",
+    "yes": "Ja",
+    "no": "Nee",
+    "level": "Vlak {n}",
+    "undo": "Ontdoen",
+    "restart": "Begin oor",
+    "show": "Wys my",
+    "skip": "Slaan oor",
+    "nextCard": "Volgende kaart",
+    "tryAgain": "Probeer weer",
+    "shuffling": "Skommel die kaarte…",
+    "noCard": "Ek kon nie nou 'n nuwe kaart kry nie.",
+    "notExact": "Dit gaan nie presies op nie.",
+    "belowZero": "Dit sou minder as 0 wees.",
+    "win": "Mooi so! Dit is 24!",
+    "wrong": "Dit is {n}, nie 24 nie.",
+    "shown": "So kan jy dit doen. Probeer die volgende kaart!"
   }
 }

@@ -16,7 +16,7 @@ const ABOVE_HUGE_COST = 2;          // … or above 50 instead
 const ADD_SUBTRACT_ONLY_BONUS = -1; // uses only + and −
 const FEW_SOLUTIONS_MAX = 2;        // a card with this many distinct solutions or fewer …
 const FEW_SOLUTIONS_COST = 1;       // … costs this much extra
-const ONLY_TRICKS_COST = 1;         // every solution needs a trick step (n − n, + 0, × 1, ÷ 1, n ÷ n)
+const ONLY_TRICKS_COST = 1;         // every solution needs a trick step (n − n, + 0, n ÷ n)
 
 // Dots go by rank within a deck: the easiest share gets 1 dot, the next share 2, the rest 3.
 const ONE_DOT_SHARE = 0.40;
@@ -107,10 +107,10 @@ function flatKey(item) {
   return (sum ? 'S[' : 'P[') + parts.sort().join(',') + ']';
 }
 
-// Steps that change nothing and give the answer away: n − n, + 0, × 1, ÷ 1, n ÷ n.
+// Steps that make a number out of nothing and give the answer away: n − n, + 0, n ÷ n.
+// × 1 and ÷ 1 are ordinary steps that children meet, so they are not tricks.
 const isTrick = ([a, op, b, r]) =>
-  (op === '−' && r === 0) || (op === '+' && (a === 0 || b === 0)) ||
-  (op === '×' && (a === 1 || b === 1)) || (op === '÷' && (b === 1 || a === b));
+  (op === '−' && r === 0) || (op === '+' && (a === 0 || b === 0)) || (op === '÷' && a === b);
 
 // With four numbers a solution is either a chain or two pairs joined at the end;
 // it's two pairs when both halves of the last step are results of earlier steps.
@@ -185,6 +185,11 @@ function deckCutoffs(bigNumbers) {
     start = end;
   }
   return (cutoffs[deck] = found);
+}
+
+// True once a deck has been ranked, so a screen can tell if the next deal will take a moment.
+export function isRanked(bigNumbers) {
+  return Boolean(cutoffs[bigNumbers ? 'big' : 'small']);
 }
 
 // 1, 2 or 3 dots, or null if the card can't make 24. A card with any number above 9
