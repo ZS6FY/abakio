@@ -7,6 +7,20 @@ import { shuffle } from '../tables/questions.js';
 
 const TARGET = 24;
 
+// Rating knobs – tune these after play-testing. A solution's score starts at 0; lower is easier.
+const DIVIDE_COST = 2;              // uses ÷
+const ABOVE_TARGET_COST = 1;        // per in-between number above 24 …
+const HUGE_LIMIT = 50;
+const ABOVE_HUGE_COST = 2;          // … or above 50 instead
+const OBVIOUS_PAIR_BONUS = -1;      // last step is a pair children know by heart
+const OBVIOUS_PRODUCTS = [[1, 24], [2, 12], [3, 8], [4, 6]];
+const OBVIOUS_ADD_PARTS = [12, 20, 18];
+const ADD_SUBTRACT_ONLY_BONUS = -1; // uses only + and −
+const ONE_SOLUTION_COST = 1;        // the card has only one route
+const ONLY_TRICKS_COST = 1;         // every route needs a trick step (… − itself, + 0, × 1, ÷ 1)
+const ONE_DOT_MAX = 0;              // card score ≤ 0 → 1 dot
+const TWO_DOT_MAX = 2;              // card score 1–2 → 2 dots, higher → 3 dots
+
 // Every whole-number result of combining a and b. Subtraction is always larger minus smaller
 // and division must be exact, so no step ever needs a negative number or a fraction.
 function combine(a, b) {
@@ -45,6 +59,10 @@ function toSteps(item, steps = []) {
 }
 
 export function solve(numbers) {
+  return solveTrees(numbers).map((item) => toSteps(item));
+}
+
+function solveTrees(numbers) {
   const found = new Map();
 
   function search(items) {
@@ -61,20 +79,78 @@ export function solve(numbers) {
   }
 
   search(numbers.map(leaf));
-  return [...found.values()].map((item) => toSteps(item));
+  return [...found.values()];
 }
 
-const usesDivide = (steps) => steps.some((s) => s[1] === '÷');
-const goesAbove = (steps) => steps.some((s) => s[3] > TARGET);
+// Key that ignores grouping as well as swapping: (5 + 7) + 9 and 5 + (7 + 9) both become
+// the sum of 5, 7 and 9. Chains of + and − become signed terms, chains of × and ÷ factors.
+function flatKey(item) {
+  if (!item.op) return String(item.value);
+  const sum = item.op === '+' || item.op === '−';
+  const parts = [];
+  (function collect(it, inverse) {
+    const sameKind = sum ? it.op === '+' || it.op === '−' : it.op === '×' || it.op === '÷';
+    if (!sameKind) {
+      parts.push((inverse ? '/' : '*') + flatKey(it));
+      return;
+    }
+    collect(it.left, inverse);
+    collect(it.right, inverse !== (it.op === '−' || it.op === '÷'));
+  })(item, false);
+  return (sum ? 'S[' : 'P[') + parts.sort().join(',') + ']';
+}
 
-// First version of the rating; the thresholds will be tuned after play-testing.
+// Steps that change nothing and give the answer away: n − n, + 0, × 1, ÷ 1.
+const isTrick = ([a, op, b, r]) =>
+  (op === '−' && r === 0) || (op === '+' && (a === 0 || b === 0)) ||
+  (op === '×' && (a === 1 || b === 1)) || (op === '÷' && b === 1);
+
+function isObviousPair([a, op, b]) {
+  if (op === '×') return OBVIOUS_PRODUCTS.some(([x, y]) => (a === x && b === y) || (a === y && b === x));
+  if (op === '+') return OBVIOUS_ADD_PARTS.includes(a) || OBVIOUS_ADD_PARTS.includes(b);
+  return false;
+}
+
+function scoreSolution(steps) {
+  let score = 0;
+  if (steps.some((s) => s[1] === '÷')) score += DIVIDE_COST;
+  for (const s of steps.slice(0, -1)) {
+    if (s[3] > HUGE_LIMIT) score += ABOVE_HUGE_COST;
+    else if (s[3] > TARGET) score += ABOVE_TARGET_COST;
+  }
+  if (isObviousPair(steps[steps.length - 1])) score += OBVIOUS_PAIR_BONUS;
+  if (steps.every((s) => s[1] === '+' || s[1] === '−')) score += ADD_SUBTRACT_ONLY_BONUS;
+  return score;
+}
+
+// The routes a card is rated by, plus the card's score (lowest route score + extras).
+function rateRoutes(numbers) {
+  const all = solveTrees(numbers).map((tree) => ({ tree, steps: toSteps(tree) }));
+  if (all.length === 0) return null;
+  const clean = all.filter((r) => !r.steps.some(isTrick));
+  const routes = clean.length > 0 ? clean : all;
+  for (const r of routes) r.score = scoreSolution(r.steps);
+  routes.sort((x, y) => x.score - y.score);
+
+  let score = routes[0].score;
+  if (clean.length === 0) score += ONLY_TRICKS_COST;
+  if (new Set(routes.map((r) => flatKey(r.tree))).size === 1) score += ONE_SOLUTION_COST;
+  return { score, easiest: routes[0].steps };
+}
+
+// 1, 2 or 3 dots, or null if the card can't make 24.
 export function rate(numbers) {
-  const solutions = solve(numbers);
-  if (solutions.length === 0) return null;
-  const friendly = solutions.some((s) => !usesDivide(s) && !goesAbove(s));
-  if (solutions.length >= 4 && friendly) return 1;
-  if (solutions.length <= 2 || solutions.every(usesDivide) || solutions.every(goesAbove)) return 3;
-  return 2;
+  const rated = rateRoutes(numbers);
+  if (!rated) return null;
+  if (rated.score <= ONE_DOT_MAX) return 1;
+  if (rated.score <= TWO_DOT_MAX) return 2;
+  return 3;
+}
+
+// The route the rating is based on – also handy later for a hint.
+export function easiest(numbers) {
+  const rated = rateRoutes(numbers);
+  return rated ? rated.easiest : null;
 }
 
 // Same four numbers in any order give the same key.
