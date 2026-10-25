@@ -122,7 +122,7 @@ function moduleSection(profileId, mod, earned) {
       ${masters}
       <h4 data-i18n="trophy.records"></h4>
       <div class="records">
-        ${records.length ? records.join('') : '<p class="empty" data-i18n="trophy.noRecords"></p>'}
+        ${records.length ? records.join('') : `<p class="empty" data-i18n="trophy.${mod.id === 'make24' ? 'noRecordsChallenge' : 'noRecords'}"></p>`}
       </div>
     </section>`;
 }

@@ -89,8 +89,9 @@
     "masters": "Tafelmeesters",
     "mastersHow": "Speel een tafel alleen in Speel-modus, 20 of 30 vrae, sonder 'n fout.",
     "records": "Rekords",
-    "noRecords": "Nog geen rekords nie. Speel 'n rondte!",
-    "earned": "Verdien op {d}"
+    "noRecords": "Nog geen rekords nie. Speel 'n rondte in Speel-modus (teen die horlosie of ∞) om jou eerste rekord op te stel.",
+    "earned": "Verdien op {d}",
+    "noRecordsChallenge": "Nog geen rekords nie. Speel 'n Uitdaging-rondte om jou eerste rekord op te stel."
   },
   "rec": {
     "unlimited": "Onbeperk",
@@ -280,7 +281,7 @@
   "info": {
     "label": "Inligting",
     "mode": "Leer: Geen horlosie nie. As jy 'n fout maak, wys die toep die regte antwoord en vra daardie som later weer.\nSpeel: Die horlosie loop. Elke fout tel 3 sekondes by jou tyd. Ná 'n fout staan die horlosie vir 3 sekondes stil sodat jy die regte antwoord kan sien. Probeer jou beste tyd klop!",
-    "order": "In volgorde: 1 × 2, 2 × 2, 3 × 2 … soos jy die tafel opsê.\nGeskommel: Dieselfde somme, maar deurmekaar. Nou moet jy elke antwoord ken, nie net die rympie nie.",
+    "order": "In volgorde: eers die tafel soos jy dit opsê – 1 × 2, 2 × 2, 3 × 2 … Daarna kom die omgedraaide somme (en by Gemeng die deelsomme) deurmekaar.\nGeskommel: Al die somme deurmekaar. Nou moet jy elke antwoord ken, nie net die rympie nie.",
     "op": "Maal ×: net maalsomme, bv. 3 × 2 = 6.\nDeel ÷: net deelsomme, bv. 6 ÷ 2 = 3.\nGemeng: maal- en deelsomme saam. Hulle hoort bymekaar: as jy weet 3 × 2 = 6, weet jy ook 6 ÷ 2 = 3.",
     "which": "Tik op die tafels wat jy wil oefen. Jy kan een tafel kies of soveel as wat jy wil.\n'Almal' kies al 12 tafels en 'Geen' maak almal weer skoon.",
     "turnTables": "Af: die tafelgetal staan altyd agter, bv. 3 × 2.\nAan: die toep vra ook 2 × 3 – dieselfde antwoord, net andersom.",

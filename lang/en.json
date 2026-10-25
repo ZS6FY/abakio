@@ -89,8 +89,9 @@
     "masters": "Table masters",
     "mastersHow": "Play one table on its own in Play mode, 20 or 30 questions, without a mistake.",
     "records": "Records",
-    "noRecords": "No records yet. Play a round!",
-    "earned": "Earned {d}"
+    "noRecords": "No records yet. Play a round in Play mode (against the clock or ∞) to set your first record.",
+    "earned": "Earned {d}",
+    "noRecordsChallenge": "No records yet. Play a Challenge round to set your first record."
   },
   "rec": {
     "unlimited": "Unlimited",
@@ -280,7 +281,7 @@
   "info": {
     "label": "More information",
     "mode": "Learn: No clock. If you make a mistake, the app shows the right answer and asks that sum again later.\nPlay: The clock runs. Each mistake adds 3 seconds to your time. After a mistake the clock stops for 3 seconds so you can see the right answer. Try to beat your best time!",
-    "order": "In order: 1 × 2, 2 × 2, 3 × 2 … the way you say the table.\nShuffled: The same sums, but mixed up. Now you have to know each answer, not just the rhyme.",
+    "order": "In order: first the table the way you say it – 1 × 2, 2 × 2, 3 × 2 … After that the turned-around sums (and with Mixed the division sums) come mixed up.\nShuffled: All the sums mixed up. Now you have to know each answer, not just the rhyme.",
     "op": "Times ×: only times sums, e.g. 3 × 2 = 6.\nDivide ÷: only division sums, e.g. 6 ÷ 2 = 3.\nMixed: times and division together. They belong together: if you know 3 × 2 = 6, you also know 6 ÷ 2 = 3.",
     "which": "Tap the tables you want to practise. You can choose one table or as many as you like.\n'All' picks all 12 tables and 'None' clears them again.",
     "turnTables": "Off: the table number is always second, e.g. 3 × 2.\nOn: the app also asks 2 × 3 – the same answer, just the other way round.",

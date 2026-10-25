@@ -29,25 +29,76 @@ export function buildPool(tables, op) {
   return pool;
 }
 
-// Learn mode: the tables in order, 1 × 2, 2 × 2, 3 × 2 … or shuffled.
-// Facts that belong together stay together as a group, even when shuffled:
-//   with "mixed", each × fact is followed by its ÷ partner (3 × 2 = 6, then 6 ÷ 2 = 3);
-//   with turnaround, each fact is followed by its turned-around form (3 × 2, then 2 × 3).
+// The same two numbers make one family of sums: 3 × 2, 2 × 3, 6 ÷ 2 and 6 ÷ 3 belong together.
+const family = (f) => `${Math.min(f.a, f.b)}x${Math.max(f.a, f.b)}`;
+
+// Partners (the turned-around form, the ÷ partner) must be at least this many places apart,
+// so a sum never gives away the answer to the next one.
+const PARTNER_GAP = 3;
+
+// Shuffle so that no two sums of one family are closer than `gap` places.
+// `before` is what was asked just ahead of this list (it counts for the first places).
+// It builds the order place by place, picking at random among the sums that are allowed,
+// and favours big families so they don't get stuck at the end. If it still gets stuck it
+// starts over; after many tries it settles for a plain shuffle.
+function spreadShuffle(items, gap = PARTNER_GAP, before = []) {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const left = new Map(); // family -> sums not yet placed
+    for (const f of items) {
+      const fam = family(f);
+      if (!left.has(fam)) left.set(fam, []);
+      left.get(fam).push(f);
+    }
+    const recent = before.slice(-(gap - 1)).map(family); // families of the last gap − 1 places
+    const out = [];
+    while (out.length < items.length) {
+      const allowed = [...left.entries()].filter(([fam, list]) => list.length && !recent.includes(fam));
+      if (!allowed.length) break;
+      // Pick a family in proportion to how many of its sums are left, then a random sum from it.
+      let r = Math.random() * allowed.reduce((n, [, list]) => n + list.length, 0);
+      let [fam, list] = allowed[allowed.length - 1];
+      for (const entry of allowed) {
+        r -= entry[1].length;
+        if (r < 0) { [fam, list] = entry; break; }
+      }
+      const f = list.splice(Math.floor(Math.random() * list.length), 1)[0];
+      out.push(f);
+      recent.push(fam);
+      if (recent.length > gap - 1) recent.shift();
+    }
+    if (out.length === items.length) return out;
+  }
+  return shuffle(items);
+}
+
+// Learn mode.
+//
+// Geskommel: every sum on its own, mixed through each other, partners kept apart.
+//
+// In volgorde: first the normal forms in table order (1 × 2, 2 × 2, 3 × 2 …), then the partner
+// forms as a second part, mixed up:
+//   × (or mixed): the × facts in order; then the turned-around forms and, with mixed, the ÷ sums
+//   ÷ only:       the ÷ facts in order; then their turned-around forms
 export function buildLearnRound(tables, op, turnaround, shuffled = false) {
-  const groups = [];
+  const normal = [];
+  const turned = [];
   for (const a of [...tables].sort((x, y) => x - y)) {
     for (let b = 1; b <= 12; b++) {
-      const group = [];
-      const add = (f) => {
-        group.push(f);
-        if (turnaround && f.a !== f.b) group.push({ ...f, turn: true });
-      };
-      if (wantsMul(op)) add({ op: 'mul', a, b, turn: false });
-      if (wantsDiv(op)) add({ op: 'div', a, b, turn: false });
-      groups.push(group);
+      for (const kind of ['mul', 'div']) {
+        if (kind === 'mul' ? !wantsMul(op) : !wantsDiv(op)) continue;
+        const f = { op: kind, a, b, turn: false };
+        normal.push(f);
+        if (turnaround && a !== b) turned.push({ ...f, turn: true });
+      }
     }
   }
-  return (shuffled ? shuffle(groups) : groups).flat();
+
+  if (shuffled) return spreadShuffle([...normal, ...turned]);
+
+  const lead = op === 'div' ? 'div' : 'mul';
+  const first = normal.filter((f) => f.op === lead);
+  const second = [...normal.filter((f) => f.op !== lead), ...turned];
+  return [...first, ...spreadShuffle(second, PARTNER_GAP, first)];
 }
 
 // Game mode: with turnaround on, about half the facts are asked the other way round.

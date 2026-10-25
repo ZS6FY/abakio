@@ -50,4 +50,4 @@ The owner tests with VS Code's Live Server ("Go Live"). Before saying a change i
 
 ## Next work (details come in the task)
 
-Maak 24 (24 card game, solo first, then multiplayer); Leer order more random; empty-records text mentioning Speel-modus; coin wallet (generic gold coin with the amount).
+Maak 24 multiplayer (Saamspeel); later: curriculum (class-work) modules and the Kio pet with the coin wallet.
