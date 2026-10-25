@@ -216,6 +216,52 @@
         "name": "Kaartkenner",
         "how": "Speel Kies drie in Speel-modus, 20 of 30 vrae, sonder 'n fout"
       }
+    },
+    "make24": {
+      "first": {
+        "name": "Eerste 24",
+        "how": "Los jou eerste kaart op"
+      },
+      "player": {
+        "name": "Kaartspeler",
+        "how": "Los 10 kaarte op"
+      },
+      "master": {
+        "name": "Kaartmeester",
+        "how": "Los 50 kaarte op"
+      },
+      "hundred": {
+        "name": "Honderd 24's",
+        "how": "Los 100 kaarte op"
+      },
+      "tough": {
+        "name": "Harde neut",
+        "how": "Los 'n kaart met drie kolletjies op sonder Wys my"
+      },
+      "big": {
+        "name": "Groot getalle",
+        "how": "Los 'n kaart met getalle groter as 9 op"
+      },
+      "streak5": {
+        "name": "Op koers",
+        "how": "Los 5 kaarte in 'n ry op in 'n ∞-rondte (Uitdaging)"
+      },
+      "streak10": {
+        "name": "Kaarthaai",
+        "how": "Los 10 kaarte in 'n ry op in 'n ∞-rondte (Uitdaging)"
+      },
+      "streak25": {
+        "name": "Onstuitbaar",
+        "how": "Los 25 kaarte in 'n ry op in 'n ∞-rondte (Uitdaging)"
+      },
+      "streak50": {
+        "name": "24-legende",
+        "how": "Los 50 kaarte in 'n ry op in 'n ∞-rondte (Uitdaging)"
+      },
+      "lightning": {
+        "name": "Blits 24",
+        "how": "Los 'n kaart met drie kolletjies op in minder as 30 sekondes (Uitdaging)"
+      }
     }
   },
   "remove": {
@@ -246,7 +292,9 @@
     "makePictures": "Aan: elke getal kry sy eie vormpies – hartjies, driehoeke, sterre – in rye van 5. So kan jy sien en tel.\nNá 'n fout: die prentjies wys net as 'n antwoord verkeerd was, om te help verstaan.\nAf: net getalle.",
     "make24How": "Jy kry vier getalle. Gebruik elke getal een keer en maak 24.\nTik 'n getal, dan +, −, × of ÷, en dan 'n tweede getal. Die twee getalle word een nuwe getal. Die som verskyn onder die kaart.\nGaan so aan totdat net een getal oor is. Is dit 24? Dan het jy dit reg!\nNet heelgetalle: 'n deelsom moet presies opgaan en jy kan nie onder 0 trek nie.\nOntdoen vat die laaste stap terug. Begin oor begin van voor af met dieselfde kaart. Wys my wys die maklikste manier, een stap op 'n slag. Slaan oor bring 'n ander kaart – die kaart kom later weer.",
     "make24Level": "Elke kaart het een, twee of drie kolletjies in die hoeke.\nEen kolletjie: die maklikste kaarte.\nTwee kolletjies: 'n bietjie moeiliker.\nDrie kolletjies: die moeilikste kaarte. Hier help dit dikwels om te deel (÷) of met groot getalle te werk.",
-    "make24Big": "Nee: die getalle op die kaart is van 1 tot 9.\nJa: die kaart kan ook getalle tot 20 hê, met altyd minstens een getal groter as 9. Dit is moeiliker.\nDie eerste keer wat jy Ja kies, neem dit 'n oomblik om die kaarte te skommel."
+    "make24Big": "Nee: die getalle op die kaart is van 1 tot 9.\nJa: die kaart kan ook getalle tot 20 hê, met altyd minstens een getal groter as 9. Dit is moeiliker.\nDie eerste keer wat jy Ja kies, neem dit 'n oomblik om die kaarte te skommel.",
+    "make24Mode": "Vrye spel: geen horlosie nie. Neem jou tyd. Jy kan op 'Wys my' druk vir hulp, en 'n kaart wat jy oorslaan kom later weer.\nUitdaging: die horlosie loop net terwyl jy 'n kaart kan sien. Daar is geen 'Wys my' nie. As jy 'n kaart oorslaan, kry jy 'n nuwe kaart, maar {n} sekondes word by jou tyd getel. Probeer jou rekords klop!",
+    "make24Count": "5 of 10: die rondte eindig wanneer jy soveel kaarte opgelos het. Jou totale tyd tel.\n∞: hou aan solank jy nie 'n kaart oorslaan nie. Die eerste keer wat jy oorslaan, eindig die rondte. Hoeveel kaarte kry jy in 'n ry reg? Daar is kentekens vir 5, 10, 25 en 50!"
   },
   "help": {
     "link": "Hoe werk dit?",
@@ -299,6 +347,31 @@
     "belowZero": "Dit sou minder as 0 wees.",
     "win": "Mooi so! Dit is 24!",
     "wrong": "Dit is {n}, nie 24 nie.",
-    "shown": "So kan jy dit doen. Probeer die volgende kaart!"
+    "shown": "So kan jy dit doen. Probeer die volgende kaart!",
+    "mode": "Hoe wil jy speel?",
+    "free": "Vrye spel",
+    "challenge": "Uitdaging",
+    "count": "Hoeveel kaarte?",
+    "rulesBtn": "Reëls",
+    "penalty": "+{n} sekondes",
+    "skips": "Oorgeslaan: {n}",
+    "cardRecord": "Nuwe rekord vir een kaart: {t}",
+    "seeResults": "Sien my uitslag",
+    "recCard": "Een kaart",
+    "recRound": "{n} kaarte",
+    "recSmall": "Getalle 1–9",
+    "recBig": "Getalle 1–20",
+    "rules": {
+      "title": "Reëls van Maak 24",
+      "r1": "Jy kry 'n kaart met vier getalle.",
+      "r2": "Gebruik al vier getalle, elkeen net een keer.",
+      "r3": "Jy mag plus (+), minus (−), maal (×) en deel (÷) gebruik.",
+      "r4": "Tik op 'n getal, dan op 'n teken, dan op nog 'n getal. Die twee getalle word een nuwe getal.",
+      "r5": "Hou aan totdat net een getal oorbly. As dit 24 is, het jy die kaart opgelos!",
+      "r6": "Net heelgetalle: 'n deelsom moet presies uitwerk, en jy kan nie onder 0 gaan nie.",
+      "r7": "In Uitdaging loop die horlosie. As jy 'n kaart oorslaan, kry jy 'n nuwe kaart, maar {n} sekondes word by jou tyd getel. In ∞ eindig die rondte as jy oorslaan.",
+      "dots": "Die kolletjies in die hoeke wys hoe moeilik die kaart is: een kolletjie is maklik, drie is moeilik.",
+      "close": "Maak toe"
+    }
   }
 }

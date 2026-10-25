@@ -20,7 +20,7 @@ export function renderHelp(profileId, mod) {
     ['tables.count', 'info.count']
   ];
 
-  const paras = (key) => t(key).split('\n').map((p) => `<p>${esc(p)}</p>`).join('');
+  const paras = (key) => t(key, mod.helpVars ?? {}).split('\n').map((p) => `<p>${esc(p)}</p>`).join('');
 
   const app = mount(`
     <section class="screen help">

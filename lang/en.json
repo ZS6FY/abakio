@@ -216,6 +216,52 @@
         "name": "Card expert",
         "how": "Play Pick three in Play mode, 20 or 30 questions, without a mistake"
       }
+    },
+    "make24": {
+      "first": {
+        "name": "First 24",
+        "how": "Solve your first card"
+      },
+      "player": {
+        "name": "Card player",
+        "how": "Solve 10 cards"
+      },
+      "master": {
+        "name": "Card master",
+        "how": "Solve 50 cards"
+      },
+      "hundred": {
+        "name": "Hundred 24s",
+        "how": "Solve 100 cards"
+      },
+      "tough": {
+        "name": "Tough nut",
+        "how": "Solve a three-dot card without Show me"
+      },
+      "big": {
+        "name": "Big numbers",
+        "how": "Solve a card with numbers bigger than 9"
+      },
+      "streak5": {
+        "name": "On course",
+        "how": "Solve 5 cards in a row in an ∞ round (Challenge)"
+      },
+      "streak10": {
+        "name": "Card shark",
+        "how": "Solve 10 cards in a row in an ∞ round (Challenge)"
+      },
+      "streak25": {
+        "name": "Unstoppable",
+        "how": "Solve 25 cards in a row in an ∞ round (Challenge)"
+      },
+      "streak50": {
+        "name": "24 legend",
+        "how": "Solve 50 cards in a row in an ∞ round (Challenge)"
+      },
+      "lightning": {
+        "name": "Lightning 24",
+        "how": "Solve a three-dot card in under 30 seconds (Challenge)"
+      }
     }
   },
   "remove": {
@@ -246,7 +292,9 @@
     "makePictures": "On: each number gets its own shapes – hearts, triangles, stars – in rows of 5. That way you can see and count.\nAfter a mistake: the pictures only show when an answer was wrong, to help understand.\nOff: numbers only.",
     "make24How": "You get four numbers. Use each number once and make 24.\nTap a number, then +, −, × or ÷, then a second number. The two numbers become one new number. The sum appears under the card.\nKeep going until only one number is left. Is it 24? Then you got it!\nWhole numbers only: a division must come out exactly and you can't go below 0.\nUndo takes back the last step. Start over begins again with the same card. Show me shows the easiest way, one step at a time. Skip brings a different card – the skipped card comes back later.",
     "make24Level": "Every card has one, two or three dots in the corners.\nOne dot: the easiest cards.\nTwo dots: a bit harder.\nThree dots: the hardest cards. Here it often helps to divide (÷) or to work with big numbers.",
-    "make24Big": "No: the numbers on the card are from 1 to 9.\nYes: the card can also have numbers up to 20, always with at least one number bigger than 9. That is harder.\nThe first time you choose Yes, it takes a moment to shuffle the cards."
+    "make24Big": "No: the numbers on the card are from 1 to 9.\nYes: the card can also have numbers up to 20, always with at least one number bigger than 9. That is harder.\nThe first time you choose Yes, it takes a moment to shuffle the cards.",
+    "make24Mode": "Free play: no clock. Take your time. You can tap 'Show me' for help, and a card you skip comes back later.\nChallenge: the clock only runs while you can see a card. There is no 'Show me'. If you skip a card, you get a new card, but {n} seconds are added to your time. Try to beat your records!",
+    "make24Count": "5 or 10: the round ends when you have solved that many cards. Your total time counts.\n∞: keep going as long as you don't skip a card. The first time you skip, the round ends. How many cards can you solve in a row? There are badges for 5, 10, 25 and 50!"
   },
   "help": {
     "link": "How does it work?",
@@ -299,6 +347,31 @@
     "belowZero": "That would go below 0.",
     "win": "Well done! That's 24!",
     "wrong": "That's {n}, not 24.",
-    "shown": "That's one way to do it. Try the next card!"
+    "shown": "That's one way to do it. Try the next card!",
+    "mode": "How do you want to play?",
+    "free": "Free play",
+    "challenge": "Challenge",
+    "count": "How many cards?",
+    "rulesBtn": "Rules",
+    "penalty": "+{n} seconds",
+    "skips": "Skipped: {n}",
+    "cardRecord": "New record for one card: {t}",
+    "seeResults": "See my results",
+    "recCard": "One card",
+    "recRound": "{n} cards",
+    "recSmall": "Numbers 1–9",
+    "recBig": "Numbers 1–20",
+    "rules": {
+      "title": "Rules of Make 24",
+      "r1": "You get a card with four numbers.",
+      "r2": "Use all four numbers, each one only once.",
+      "r3": "You may use plus (+), minus (−), times (×) and divide (÷).",
+      "r4": "Tap a number, then a sign, then another number. The two numbers become one new number.",
+      "r5": "Keep going until only one number is left. If it is 24, you have solved the card!",
+      "r6": "Whole numbers only: a division must work out exactly, and you can't go below 0.",
+      "r7": "In Challenge the clock runs. If you skip a card, you get a new card, but {n} seconds are added to your time. In ∞ the round ends when you skip.",
+      "dots": "The dots in the corners show how hard the card is: one dot is easy, three is hard.",
+      "close": "Close"
+    }
   }
 }

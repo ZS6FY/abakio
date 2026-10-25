@@ -442,7 +442,6 @@ html { background: var(--bg-2); }
 .make24-play { --m24-size: min(86vw, 40vh, 360px); gap: 8px; }
 /* The footer is hidden while playing but still takes room; on this tall screen give it back. */
 body.playing:has(.make24-play) .footer { display: none; }
-.dot-row { color: #ffe08a; letter-spacing: 3px; font-size: 1.2rem; }
 
 .m24-stage { width: var(--m24-size); height: var(--m24-size); display: flex; align-items: center; justify-content: center; }
 .m24-message { margin: 0; font-size: 1.3rem; font-weight: 600; color: var(--muted); }
@@ -537,3 +536,40 @@ body.playing:has(.make24-play) .footer { display: none; }
 }
 .m24-back[hidden] { display: none; }
 .m24-back img { width: 72%; height: 72%; }
+
+/* ---- v0.10: Maak 24 Uitdaging --------------------------------------- */
+/* Level dots on the setup buttons, in the card's colours. A navy chip keeps teal readable. */
+.m24-lvl { display: inline-flex; gap: 6px; }
+.m24-lvl i { width: 1rem; height: 1rem; border-radius: 50%; background: var(--kio-teal); }
+.m24-lvl.l2 i { background: var(--kio-orange); }
+.m24-lvl.l3 i { background: var(--kio-yellow); }
+.seg-btn.m24-level { background: rgba(39, 55, 80, 0.55); }
+.seg-btn.m24-level.on { background: var(--kio-navy); border-color: #fff; }
+
+/* Top bar: quit, Reëls, progress, horlosie */
+.make24-play .play-top { grid-template-columns: 48px auto 1fr auto; }
+.m24-rules-btn {
+  font: inherit; font-size: 0.95rem; font-weight: 600; padding: 8px 14px; border: none;
+  border-radius: 12px; background: var(--card); color: var(--text); cursor: pointer;
+}
+.m24-actions.three .btn:last-child { grid-column: 1 / -1; } /* Uitdaging has no "Wys my" */
+
+/* The rules, over the game */
+.m24-rules {
+  position: fixed; inset: 0; z-index: 10; overflow-y: auto; padding: 16px;
+  display: flex; align-items: flex-start; justify-content: center;
+  background: rgba(20, 24, 60, 0.94);
+}
+.m24-rules[hidden] { display: none; }
+.m24-rules-card {
+  width: 100%; max-width: 480px; margin-block: auto; padding: 16px 18px; text-align: left;
+  background: var(--kio-navy); border: 3px solid var(--kio-teal); border-radius: 18px;
+}
+.m24-rules-card ol { margin: 0 0 12px; padding-left: 1.4rem; line-height: 1.45; font-size: 1.05rem; }
+.m24-rules-card li { margin-bottom: 6px; }
+.m24-rules-card p { margin: 0 0 16px; line-height: 1.45; color: var(--kio-yellow); font-weight: 600; }
+.m24-badges { font-size: 0.95rem; font-weight: 600; color: var(--kio-yellow); }
+.m24-badges:empty { display: none; }
+.m24-rules-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.m24-rules-card h2 { margin: 0; }
+

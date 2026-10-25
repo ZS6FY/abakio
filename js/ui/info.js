@@ -13,8 +13,8 @@ export function infoTag(id) {
 }
 
 // The card itself (hidden until the ⓘ is tapped).
-export function infoCard(id, textKey) {
-  const paragraphs = t(textKey).split('\n').map((p) => `<p>${esc(p)}</p>`).join('');
+export function infoCard(id, textKey, vars = {}) {
+  const paragraphs = t(textKey, vars).split('\n').map((p) => `<p>${esc(p)}</p>`).join('');
   return `<div class="info-card" data-info-card="${id}" hidden>${paragraphs}</div>`;
 }
 

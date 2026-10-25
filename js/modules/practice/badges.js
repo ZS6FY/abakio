@@ -32,6 +32,19 @@ export const BADGES = {
     { id: 'speedy', icon: '⚡' },
     { id: 'champion', icon: '👑' }
   ],
+  make24: [
+    { id: 'make24.first', icon: '🎴' },
+    { id: 'make24.player', icon: '♠️' },
+    { id: 'make24.master', icon: '♣️' },
+    { id: 'make24.hundred', icon: '♦️' },
+    { id: 'make24.tough', icon: '🥜' },
+    { id: 'make24.big', icon: '🔢' },
+    { id: 'make24.streak5', icon: '🧭' },
+    { id: 'make24.streak10', icon: '🦈' },
+    { id: 'make24.streak25', icon: '🚂' },
+    { id: 'make24.streak50', icon: '🐉' },
+    { id: 'make24.lightning', icon: '🌩️' }
+  ],
   missing: [
     { id: 'missing.first', icon: '🔎' },
     { id: 'missing.perfect', icon: '👁️' },
@@ -49,6 +62,7 @@ export const MASTER_ICON = '🏅';
 const TABLES_SPEEDY_MS = 60000;
 const MISSING_SPEEDY_MS = 75000; // missing numbers take a little longer to read
 const MAKE_SPEEDY_MS = 90000;    // young learners, and the pictures take time to look at
+const MAKE24_LIGHTNING_MS = 30000;
 
 export function getEarned(profileId) {
   return load(`badges.${profileId}`, {});
@@ -118,8 +132,8 @@ const RULES = {
   }
 };
 
-// Check a finished round and award any new badges. Returns the new badge ids.
-export function awardBadges(profileId, moduleId, s, r) {
+// Run a rule and store any badges it gives for the first time. Returns the new badge ids.
+function award(profileId, rule) {
   const earned = getEarned(profileId);
   const today = new Date().toISOString().slice(0, 10);
   const fresh = [];
@@ -129,7 +143,35 @@ export function awardBadges(profileId, moduleId, s, r) {
       fresh.push(id);
     }
   };
-  RULES[moduleId]?.(give, s, r);
+  rule(give);
   if (fresh.length) save(`badges.${profileId}`, earned);
   return fresh;
+}
+
+// Check a finished round and award any new badges. Returns the new badge ids.
+export function awardBadges(profileId, moduleId, s, r) {
+  return award(profileId, (give) => RULES[moduleId]?.(give, s, r));
+}
+
+// Maak 24 gives its badges card by card, so nothing is lost when a round is left early
+// (and free play has no results screen at all).
+// ev: { dots, hasBig, usedHint, challenge, ms, streak } – streak is only set in ∞ rounds.
+// The counter key ends in ".<learnerId>", so it goes when the learner is removed.
+export function awardMake24Card(profileId, ev) {
+  const key = `make24.solved.${profileId}`;
+  const solved = load(key, 0) + 1;
+  save(key, solved);
+  return award(profileId, (give) => {
+    give('make24.first');
+    if (solved >= 10) give('make24.player');
+    if (solved >= 50) give('make24.master');
+    if (solved >= 100) give('make24.hundred');
+    if (ev.dots === 3 && !ev.usedHint) give('make24.tough');
+    if (ev.hasBig) give('make24.big');
+    if (ev.streak >= 5) give('make24.streak5');
+    if (ev.streak >= 10) give('make24.streak10');
+    if (ev.streak >= 25) give('make24.streak25');
+    if (ev.streak >= 50) give('make24.streak50');
+    if (ev.challenge && ev.dots === 3 && ev.ms < MAKE24_LIGHTNING_MS) give('make24.lightning');
+  });
 }

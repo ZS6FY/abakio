@@ -224,7 +224,7 @@ export function renderResults(profileId, settings, mod, r) {
     if (record) setBest(profileId, key, Math.round(r.total));
     stars = r.wrong === 0 ? '⭐⭐⭐' : r.wrong <= 2 ? '⭐⭐' : '⭐';
     lines.push(t('results.time', { t: formatSeconds(r.total) }));
-    lines.push(t('results.wrong', { n: r.wrong }));
+    if (r.wrong !== undefined) lines.push(t('results.wrong', { n: r.wrong }));
     if (!record) lines.push(t('results.best', { t: formatSeconds(best) }));
   } else {
     const key = bestKey(settings, mod);
@@ -235,8 +235,12 @@ export function renderResults(profileId, settings, mod, r) {
     lines.push(t('results.streak', { n: r.streak }));
     if (!record && best !== null) lines.push(t('results.bestStreak', { n: best }));
   }
+  // A module may set its own stars and add lines (Maak 24: skips, one-card record).
+  if (r.stars) stars = r.stars;
+  if (r.extraLines) lines.push(...r.extraLines);
 
-  const newBadges = awardBadges(profileId, mod.id, settings, r);
+  // Badges a module already gave during play (Maak 24 gives them card by card).
+  const newBadges = [...(r.freshBadges ?? []), ...awardBadges(profileId, mod.id, settings, r)];
   const badgeHtml = newBadges.length
     ? `<div class="new-badges">
          <p class="record" data-i18n="results.newBadge"></p>

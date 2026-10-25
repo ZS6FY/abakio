@@ -1,5 +1,5 @@
-// Setup screen for Maak 24: how many dots (difficulty) and whether numbers
-// above 9 may appear.
+// Setup screen for Maak 24: free play or Uitdaging (with a round size), how many dots
+// (difficulty) and whether numbers above 9 may appear.
 
 import { getProfile, load, save } from '../../core/storage.js';
 import { t } from '../../core/i18n.js';
@@ -8,12 +8,14 @@ import { mount, esc, setPlaying } from '../../ui/dom.js';
 import { renderLearnerMenu } from '../../ui/learner-menu.js';
 import { infoTag, infoCard, wireInfo } from '../../ui/info.js';
 import { renderHelp } from '../practice/help.js';
-import { renderMake24Play } from './play.js';
+import { renderMake24Play, SKIP_PENALTY_MS } from './play.js';
 
-// No grade-based defaults yet: every learner starts on the easiest cards.
+// No grade-based defaults yet: every learner starts on the easiest cards, in free play.
 export function getMake24Settings(profileId) {
-  const s = { dots: 1, big: false, ...load(`make24.settings.${profileId}`, {}) };
+  const s = { mode: 'free', dots: 1, big: false, count: 5, ...load(`make24.settings.${profileId}`, {}) };
+  if (!['free', 'challenge'].includes(s.mode)) s.mode = 'free';
   if (![1, 2, 3].includes(s.dots)) s.dots = 1;
+  if (![5, 10, 'inf'].includes(s.count)) s.count = 5;
   s.big = Boolean(s.big);
   return s;
 }
@@ -24,9 +26,10 @@ export function renderMake24Setup(profileId, mod) {
   const s = getMake24Settings(profileId);
   const key = `make24.settings.${profileId}`;
 
+  // The dots are drawn in the same colours as on the card: teal, orange, yellow.
   const dotButtons = [1, 2, 3].map((n) => `
-    <button type="button" class="seg-btn" data-dots="${n}" aria-label="${esc(t('make24.level', { n }))}">
-      <span class="dot-row">${'●'.repeat(n)}</span>
+    <button type="button" class="seg-btn m24-level" data-dots="${n}" aria-label="${esc(t('make24.level', { n }))}">
+      <span class="m24-lvl l${n}" aria-hidden="true">${'<i></i>'.repeat(n)}</span>
     </button>`).join('');
 
   const app = mount(`
@@ -38,6 +41,15 @@ export function renderMake24Setup(profileId, mod) {
       </div>
 
       <button type="button" class="btn-link help-link" id="help-link" data-i18n="help.link"></button>
+
+      <div class="field">
+        <span class="field-label"><span data-i18n="make24.mode"></span>${infoTag('mode')}</span>
+        ${infoCard('mode', 'info.make24Mode', { n: SKIP_PENALTY_MS / 1000 })}
+        <div class="seg">
+          <button type="button" class="seg-btn" data-mode="free"><span data-i18n="make24.free"></span><small data-i18n="tables.learnSub"></small></button>
+          <button type="button" class="seg-btn" data-mode="challenge"><span data-i18n="make24.challenge"></span><small data-i18n="tables.gameSub"></small></button>
+        </div>
+      </div>
 
       <div class="field">
         <span class="field-label"><span data-i18n="make24.difficulty"></span>${infoTag('level')}</span>
@@ -54,16 +66,39 @@ export function renderMake24Setup(profileId, mod) {
         </div>
       </div>
 
+      <div class="field" id="count-field">
+        <span class="field-label"><span data-i18n="make24.count"></span>${infoTag('count')}</span>
+        ${infoCard('count', 'info.make24Count')}
+        <div class="seg">
+          <button type="button" class="seg-btn" data-count="5">5</button>
+          <button type="button" class="seg-btn" data-count="10">10</button>
+          <button type="button" class="seg-btn" data-count="inf">∞</button>
+        </div>
+      </div>
+
       <button type="button" class="btn btn-primary" id="start" data-i18n="tables.start"></button>
     </section>`);
 
   const refresh = () => {
+    app.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === s.mode));
+    app.querySelectorAll('[data-count]').forEach((b) => b.classList.toggle('on', b.dataset.count === String(s.count)));
+    app.querySelector('#count-field').hidden = s.mode !== 'challenge'; // the round size is for Uitdaging only
     app.querySelectorAll('[data-dots]').forEach((b) =>
       b.classList.toggle('on', Number(b.dataset.dots) === s.dots));
     app.querySelectorAll('[data-big]').forEach((b) =>
       b.classList.toggle('on', (b.dataset.big === 'yes') === s.big));
   };
 
+  app.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => {
+    s.mode = b.dataset.mode;
+    save(key, s);
+    refresh();
+  }));
+  app.querySelectorAll('[data-count]').forEach((b) => b.addEventListener('click', () => {
+    s.count = b.dataset.count === 'inf' ? 'inf' : Number(b.dataset.count);
+    save(key, s);
+    refresh();
+  }));
   app.querySelectorAll('[data-dots]').forEach((b) => b.addEventListener('click', () => {
     s.dots = Number(b.dataset.dots);
     save(key, s);
