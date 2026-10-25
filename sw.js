@@ -5,7 +5,7 @@
 // AND in version.json (keep them the same). That is what triggers
 // the "new version available" banner on the kids' devices.
 
-const VERSION = '0.9.0';
+const VERSION = '0.9.1';
 const CACHE = `abakio-${VERSION}`;
 
 // Every file the app needs to run offline. Add new files here as the app grows.
@@ -43,6 +43,7 @@ const APP_SHELL = [
   'js/modules/make24/module.js',
   'js/modules/make24/setup.js',
   'js/modules/make24/play.js',
+  'assets/kio/kio-pose-wave.svg',
   'lang/af.json',
   'lang/en.json',
   'assets/icons/favicon.ico',

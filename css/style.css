@@ -447,46 +447,6 @@ body.playing:has(.make24-play) .footer { display: none; }
 .m24-stage { width: var(--m24-size); height: var(--m24-size); display: flex; align-items: center; justify-content: center; }
 .m24-message { margin: 0; font-size: 1.3rem; font-weight: 600; color: var(--muted); }
 
-/* The card: white with teal lines and orange dots. The numbers sit in the four
-   triangles, each turned so its foot points to the middle. */
-.m24-card {
-  position: relative; width: 100%; height: 100%; overflow: hidden;
-  background: #fff; border: 4px solid var(--teal); border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-.m24-card.won { border-color: #3ccf6e; animation: m24-pop 0.6s ease-out; }
-@keyframes m24-pop { 50% { transform: scale(1.05); } }
-@media (prefers-reduced-motion: reduce) { .m24-card.won { animation: none; } }
-
-.m24-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.m24-lines line { stroke: var(--teal); stroke-width: 1.5px; vector-effect: non-scaling-stroke; opacity: 0.6; }
-
-.m24-dots { position: absolute; display: flex; gap: calc(var(--m24-size) * 0.012); }
-.m24-dots i { width: calc(var(--m24-size) * 0.035); height: calc(var(--m24-size) * 0.035); border-radius: 50%; background: var(--orange); }
-.m24-dots.c1 { top: 3.5%; left: 3.5%; }
-.m24-dots.c2 { top: 3.5%; right: 3.5%; }
-.m24-dots.c3 { bottom: 3.5%; right: 3.5%; }
-.m24-dots.c4 { bottom: 3.5%; left: 3.5%; }
-
-.m24-num {
-  position: absolute; width: 25%; height: 25%; padding: 0; border: none; border-radius: 14px;
-  background: transparent; color: var(--bg-1); cursor: pointer; touch-action: manipulation;
-  font: inherit; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
-  font-size: calc(var(--m24-size) * 0.15);
-  display: flex; align-items: center; justify-content: center;
-}
-.m24-num:disabled { color: var(--bg-1); cursor: default; }
-.m24-num.sel { background: #ffe08a; }
-.m24-num.u span { text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.08em; }
-.m24-num[data-len="3"] { font-size: calc(var(--m24-size) * 0.115); }
-.m24-num[data-len="4"] { font-size: calc(var(--m24-size) * 0.085); }
-.m24-num[data-len="5"] { font-size: calc(var(--m24-size) * 0.07); }
-.m24-num[data-len="6"] { font-size: calc(var(--m24-size) * 0.06); }
-.m24-top { left: 50%; top: 25%; transform: translate(-50%, -50%) rotate(0deg); }
-.m24-right { left: 75%; top: 50%; transform: translate(-50%, -50%) rotate(90deg); }
-.m24-bottom { left: 50%; top: 75%; transform: translate(-50%, -50%) rotate(180deg); }
-.m24-left { left: 25%; top: 50%; transform: translate(-50%, -50%) rotate(270deg); }
-
 .m24-ops { width: 100%; }
 .m24-ops .seg-btn { font-size: 2rem; font-weight: 700; min-height: 56px; }
 .m24-ops .seg-btn:disabled { opacity: 0.4; cursor: default; }
@@ -502,3 +462,78 @@ body.playing:has(.make24-play) .footer { display: none; }
 .m24-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .m24-actions .btn { min-height: 48px; font-size: 1.05rem; }
 .m24-actions .btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ---- v0.9.1: Maak 24 card look, in Kio's colours ------------------- */
+:root {
+  --kio-orange: #ef6f23;
+  --kio-teal: #429d96;
+  --kio-teal-dark: #265a5d;
+  --kio-navy: #273750;
+  --kio-yellow: #fac15a;
+  --m24-patch: #fdf6e3;   /* light patch behind each number, so dark numbers read on any wedge */
+}
+
+/* Card face: a dark edge, a wheel with one coloured wedge behind each number, Kio in the middle.
+   The numbers are turned so their foot points to the middle; every number is underlined. */
+.m24-card {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  background: var(--kio-navy); border: 4px solid var(--kio-teal); border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.m24-card.won { border-color: var(--kio-yellow); animation: m24-pop 0.6s ease-out; }
+@keyframes m24-pop { 50% { transform: scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { .m24-card.won { animation: none; } }
+
+.m24-wheel { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.m24-wheel path { stroke: var(--kio-navy); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+.m24-wheel .w0 { fill: var(--kio-orange); }
+.m24-wheel .w1 { fill: var(--kio-teal); }
+.m24-wheel .w2 { fill: var(--kio-yellow); }
+.m24-wheel .w3 { fill: var(--kio-teal-dark); }
+
+/* Level dots on the dark corners: teal, orange or yellow */
+.m24-dots { position: absolute; display: flex; gap: calc(var(--m24-size) * 0.015); }
+.m24-dots i { width: calc(var(--m24-size) * 0.05); height: calc(var(--m24-size) * 0.05); border-radius: 50%; background: var(--kio-teal); }
+.lv2 .m24-dots i { background: var(--kio-orange); }
+.lv3 .m24-dots i { background: var(--kio-yellow); }
+.m24-dots.c1 { top: 4%; left: 4%; }
+.m24-dots.c2 { top: 4%; right: 4%; }
+.m24-dots.c3 { bottom: 4%; right: 4%; }
+.m24-dots.c4 { bottom: 4%; left: 4%; }
+
+.m24-kio {
+  position: absolute; left: 50%; top: 50%; width: 22%; height: 22%; transform: translate(-50%, -50%);
+  display: flex; padding: 1.5%; border-radius: 12px; pointer-events: none;
+  background: var(--m24-patch); border: 2px solid var(--kio-navy);
+}
+.m24-kio img, .m24-back img { width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+
+.m24-num {
+  position: absolute; width: 28%; height: 22%; padding: 0; border: none; border-radius: 12px;
+  background: var(--m24-patch); color: var(--kio-navy); cursor: pointer; touch-action: manipulation;
+  font: inherit; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
+  font-size: calc(var(--m24-size) * 0.15);
+  display: flex; align-items: center; justify-content: center;
+}
+.m24-num span { text-decoration: underline; text-decoration-thickness: 0.07em; text-underline-offset: 0.1em; }
+.m24-num:disabled { color: var(--kio-navy); cursor: default; }
+.m24-num.sel { background: var(--kio-navy); color: #fff; box-shadow: 0 0 0 3px #fff; }
+.m24-num.gone { background: transparent; box-shadow: none; }
+.m24-num[data-len="3"] { font-size: calc(var(--m24-size) * 0.115); }
+.m24-num[data-len="4"] { font-size: calc(var(--m24-size) * 0.085); }
+.m24-num[data-len="5"] { font-size: calc(var(--m24-size) * 0.07); }
+.m24-num[data-len="6"] { font-size: calc(var(--m24-size) * 0.06); }
+.m24-top { left: 50%; top: 25%; transform: translate(-50%, -50%) rotate(0deg); }
+.m24-right { left: 75%; top: 50%; transform: translate(-50%, -50%) rotate(90deg); }
+.m24-bottom { left: 50%; top: 75%; transform: translate(-50%, -50%) rotate(180deg); }
+.m24-left { left: 25%; top: 50%; transform: translate(-50%, -50%) rotate(270deg); }
+
+/* Card back: Kio waving on navy with a teal border. Tap it to turn the card over. */
+.m24-back {
+  width: 100%; height: 100%; padding: 0; cursor: pointer; touch-action: manipulation;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--kio-navy); border: 4px solid var(--kio-teal); border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.m24-back[hidden] { display: none; }
+.m24-back img { width: 72%; height: 72%; }

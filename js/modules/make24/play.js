@@ -6,13 +6,23 @@
 import { getProfile } from '../../core/storage.js';
 import { t } from '../../core/i18n.js';
 import { go, onLeave } from '../../core/router.js';
-import { mount, setPlaying } from '../../ui/dom.js';
+import { mount, esc, setPlaying } from '../../ui/dom.js';
 import { dealCard, easiest, isRanked } from './cards.js';
 
 const RECENT_MAX = 20;
 const SKIP_RETURN_AFTER = 3; // cards dealt before a skipped card comes back
 const POSITIONS = ['top', 'right', 'bottom', 'left'];
 const OPS = ['+', '−', '×', '÷'];
+const KIO = 'assets/kio/kio-pose-wave.svg';
+
+// The four wedges of the wheel behind the numbers: top, right, bottom, left.
+// Corner points sit on the diagonals of a circle of radius 46 around (50, 50).
+const WEDGES = [
+  'M50 50 L17.5 17.5 A46 46 0 0 1 82.5 17.5 Z',
+  'M50 50 L82.5 17.5 A46 46 0 0 1 82.5 82.5 Z',
+  'M50 50 L82.5 82.5 A46 46 0 0 1 17.5 82.5 Z',
+  'M50 50 L17.5 82.5 A46 46 0 0 1 17.5 17.5 Z'
+];
 
 // Whole numbers only, the same rules as the solver.
 function combine(a, op, b) {
@@ -31,6 +41,7 @@ export function renderMake24Play(profileId, settings, mod) {
   let dealt = 0;
 
   let card = null;    // null while shuffling or when no card could be dealt
+  let faceUp = false; // a new card shows its back first
   let values = [];    // one per position; null once merged into another number
   let history = [];   // { values, text } per step, for Ontdoen
   let from = null;    // position of the first tapped number
@@ -69,35 +80,49 @@ export function renderMake24Play(profileId, settings, mod) {
   onLeave(() => { gone = true; clearTimeout(timer); });
 
   // ---- drawing ----
-  const dotsHtml = (cls) => `<span class="m24-dots ${cls}" aria-hidden="true">${'<i></i>'.repeat(card.dots)}</span>`;
-
-  function cardHtml() {
-    const tiles = values.map((v, i) => {
-      const text = v === null ? '' : String(v);
-      // 6 and 9 look alike upside down, so any number with one of them is underlined.
-      const under = /[69]/.test(text) ? ' u' : '';
-      const sel = i === from ? ' sel' : '';
-      const off = v === null || phase !== 'play' ? ' disabled' : '';
-      return `<button type="button" class="m24-num m24-${POSITIONS[i]}${sel}${under}" data-i="${i}" data-len="${text.length}"${off}><span>${text}</span></button>`;
-    }).join('');
-    return `
-      <div class="m24-card${phase === 'won' ? ' won' : ''}">
-        <svg class="m24-lines" viewBox="0 0 100 100" aria-hidden="true">
-          <line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/>
-        </svg>
-        ${dotsHtml('c1')}${dotsHtml('c2')}${dotsHtml('c3')}${dotsHtml('c4')}
+  // The card is built once per deal and then only updated, so Kio's picture never reloads.
+  function buildCard() {
+    const tiles = POSITIONS.map((pos, i) =>
+      `<button type="button" class="m24-num m24-${pos}" data-i="${i}"><span></span></button>`).join('');
+    const dots = ['c1', 'c2', 'c3', 'c4']
+      .map((c) => `<span class="m24-dots ${c}" aria-hidden="true">${'<i></i>'.repeat(card.dots)}</span>`).join('');
+    const wedges = WEDGES.map((d, i) => `<path class="w${i}" d="${d}"/>`).join('');
+    el('stage').innerHTML = `
+      <button type="button" class="m24-back" id="back" aria-label="${esc(t('make24.flip'))}">
+        <img src="${KIO}" alt="" draggable="false">
+      </button>
+      <div class="m24-card lv${card.dots}" id="face" hidden>
+        <svg class="m24-wheel" viewBox="0 0 100 100" aria-hidden="true">${wedges}</svg>
+        ${dots}
+        <span class="m24-kio" aria-hidden="true"><img src="${KIO}" alt="" draggable="false"></span>
         ${tiles}
       </div>`;
   }
 
+  function syncCard() {
+    el('back').hidden = faceUp;
+    const face = el('face');
+    face.hidden = !faceUp;
+    face.classList.toggle('won', phase === 'won');
+    face.querySelectorAll('.m24-num').forEach((b, i) => {
+      const v = values[i];
+      const text = v === null ? '' : String(v);
+      b.firstElementChild.textContent = text;
+      b.dataset.len = text.length;
+      b.classList.toggle('sel', i === from);
+      b.classList.toggle('gone', v === null);
+      b.disabled = v === null || phase !== 'play' || !faceUp;
+    });
+  }
+
   function draw() {
     const live = card !== null;
-    const playing = live && (phase === 'play' || phase === 'wrong');
+    const playing = live && faceUp && (phase === 'play' || phase === 'wrong');
 
-    if (live) el('stage').innerHTML = cardHtml();
+    if (live) syncCard();
     el('ops').querySelectorAll('[data-op]').forEach((b) => {
       b.classList.toggle('on', b.dataset.op === op);
-      b.disabled = !live || phase !== 'play';
+      b.disabled = !live || !faceUp || phase !== 'play';
     });
     el('steps').innerHTML = history.map((h) => `<li>${h.text}</li>`).join('');
 
@@ -109,13 +134,17 @@ export function renderMake24Play(profileId, settings, mod) {
     el('show').disabled = !playing;
     el('skip').disabled = !playing;
 
+    const flipping = live && !faceUp;
     const main = el('main');
-    main.hidden = !(phase !== 'play' || mainAction);
-    // The four helpers are pointless once the card is solved (or missing), and the main
-    // button then takes their place, so it stays on screen on a small phone.
-    el('actions').hidden = phase === 'won' || phase === 'shown' || (!live && Boolean(mainAction));
+    main.hidden = !(flipping || phase !== 'play' || mainAction);
+    // The four helpers are pointless while the card is face down, once it is solved, or
+    // when it is missing; the main button then takes their place, so it stays on screen
+    // on a small phone.
+    el('actions').hidden = flipping || phase === 'won' || phase === 'shown' || (!live && Boolean(mainAction));
     if (!main.hidden) {
-      main.textContent = t(phase === 'wrong' ? 'make24.tryAgain' : card ? 'make24.nextCard' : 'make24.tryAgain');
+      main.textContent = t(flipping ? 'make24.flip'
+        : phase === 'wrong' ? 'make24.tryAgain'
+        : card ? 'make24.nextCard' : 'make24.tryAgain');
     }
   }
 
@@ -229,12 +258,22 @@ export function renderMake24Play(profileId, settings, mod) {
     dealNext();
   }
 
+  // Draai om: show the face. Later (Uitdaging) the clock starts here.
+  function flip() {
+    if (!card || faceUp) return;
+    faceUp = true;
+    mainAction = null;
+    draw();
+  }
+
   // ---- dealing ----
   function showCard(next) {
     card = next;
     dealt++;
+    faceUp = false;
     reset();
-    mainAction = null;
+    mainAction = flip;
+    buildCard();
     draw();
   }
 
@@ -286,6 +325,7 @@ export function renderMake24Play(profileId, settings, mod) {
   }
 
   el('stage').addEventListener('click', (e) => {
+    if (e.target.closest('.m24-back')) return flip();
     const btn = e.target.closest('.m24-num');
     if (btn && !btn.disabled) tapNumber(Number(btn.dataset.i));
   });

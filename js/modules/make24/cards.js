@@ -112,6 +112,9 @@ function flatKey(item) {
 const isTrick = ([a, op, b, r]) =>
   (op === '−' && r === 0) || (op === '+' && (a === 0 || b === 0)) || (op === '÷' && a === b);
 
+const usesOne = (steps) =>
+  steps.some(([a, op, b]) => (op === '×' && (a === 1 || b === 1)) || (op === '÷' && b === 1));
+
 // With four numbers a solution is either a chain or two pairs joined at the end;
 // it's two pairs when both halves of the last step are results of earlier steps.
 const isChain = (tree) => !(tree.left.op && tree.right.op);
@@ -135,7 +138,8 @@ function scoreCard(numbers) {
   const clean = all.filter((r) => !r.steps.some(isTrick));
   const routes = clean.length > 0 ? clean : all;
   for (const r of routes) r.score = scoreSolution(r);
-  routes.sort((x, y) => x.score - y.score);
+  // Among equally easy solutions the hint prefers one without × 1 or ÷ 1.
+  routes.sort((x, y) => x.score - y.score || usesOne(x.steps) - usesOne(y.steps));
 
   let score = routes[0].score;
   if (clean.length === 0) score += ONLY_TRICKS_COST;
