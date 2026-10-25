@@ -433,12 +433,22 @@ export function renderMake24Play(profileId, settings, mod) {
 
   function deal() {
     if (gone) return;
-    let next;
-    try {
-      next = dealCard({ dots: settings.dots, bigNumbers: settings.big, recent });
-    } catch {
-      return noCard();
+    // Lukraak: every card gets its own level, 1, 2 or 3 with equal chance. If a level has no
+    // card left to deal (a long recent list), the other levels are tried before giving up.
+    const first = Math.floor(Math.random() * 3);
+    const levels = settings.dots === 'random'
+      ? [1 + first, ...[1, 2, 3].filter((l) => l !== 1 + first)]
+      : [settings.dots];
+    let next = null;
+    for (const dots of levels) {
+      try {
+        next = dealCard({ dots, bigNumbers: settings.big, recent });
+        break;
+      } catch {
+        // try the next level
+      }
     }
+    if (!next) return noCard();
     recent.push(next);
     if (recent.length > RECENT_MAX) recent.shift();
     showCard(next);

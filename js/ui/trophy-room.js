@@ -57,6 +57,7 @@ function makeWhat([, , op, count, step, targets]) {
 // Maak 24 records (Uitdaging only): "make24|card|dots|small", "make24|round5|dots|big",
 // "make24|streak|dots|small". Times are in ms, streaks are card counts.
 const MAKE24_ORDER = { card: 0, round5: 1, round10: 2, streak: 3 };
+const level = (dots) => (dots === 'random' ? 4 : Number(dots)); // Lukraak comes after 1, 2, 3
 
 function make24Rows(profileId) {
   const best = load(`best.${profileId}`, {});
@@ -64,12 +65,12 @@ function make24Rows(profileId) {
     .map(([key, value]) => ({ parts: key.split('|'), value }))
     .filter(({ parts }) => parts[0] === 'make24' && parts.length === 4 && parts[1] in MAKE24_ORDER)
     .sort((x, y) => MAKE24_ORDER[x.parts[1]] - MAKE24_ORDER[y.parts[1]]
-      || Number(x.parts[2]) - Number(y.parts[2]) || (x.parts[3] === 'big') - (y.parts[3] === 'big'))
+      || level(x.parts[2]) - level(y.parts[2]) || (x.parts[3] === 'big') - (y.parts[3] === 'big'))
     .map(({ parts: [, type, dots, size], value }) => {
       const kind = type === 'card' ? t('make24.recCard')
         : type === 'streak' ? t('rec.unlimited')
         : t('make24.recRound', { n: type.slice(5) });
-      const what = [kind, '●'.repeat(Number(dots)), t(size === 'big' ? 'make24.recBig' : 'make24.recSmall')].join(' · ');
+      const what = [kind, dots === 'random' ? t('make24.random') : '●'.repeat(Number(dots)), t(size === 'big' ? 'make24.recBig' : 'make24.recSmall')].join(' · ');
       const score = type === 'streak' ? t('rec.inRow', { n: value }) : formatSeconds(value);
       return `<div class="record-row"><span>${esc(what)}</span><strong>${esc(score)}</strong></div>`;
     });

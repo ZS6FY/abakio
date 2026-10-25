@@ -14,7 +14,7 @@ import { renderMake24Play, SKIP_PENALTY_MS } from './play.js';
 export function getMake24Settings(profileId) {
   const s = { mode: 'free', dots: 1, big: false, count: 5, ...load(`make24.settings.${profileId}`, {}) };
   if (!['free', 'challenge'].includes(s.mode)) s.mode = 'free';
-  if (![1, 2, 3].includes(s.dots)) s.dots = 1;
+  if (![1, 2, 3, 'random'].includes(s.dots)) s.dots = 1;
   if (![5, 10, 'inf'].includes(s.count)) s.count = 5;
   s.big = Boolean(s.big);
   return s;
@@ -30,7 +30,8 @@ export function renderMake24Setup(profileId, mod) {
   const dotButtons = [1, 2, 3].map((n) => `
     <button type="button" class="seg-btn m24-level" data-dots="${n}" aria-label="${esc(t('make24.level', { n }))}">
       <span class="m24-lvl l${n}" aria-hidden="true">${'<i></i>'.repeat(n)}</span>
-    </button>`).join('');
+    </button>`).join('')
+    + `<button type="button" class="seg-btn m24-level m24-random" data-dots="random" data-i18n="make24.random"></button>`;
 
   const app = mount(`
     <section class="screen">
@@ -84,7 +85,7 @@ export function renderMake24Setup(profileId, mod) {
     app.querySelectorAll('[data-count]').forEach((b) => b.classList.toggle('on', b.dataset.count === String(s.count)));
     app.querySelector('#count-field').hidden = s.mode !== 'challenge'; // the round size is for Uitdaging only
     app.querySelectorAll('[data-dots]').forEach((b) =>
-      b.classList.toggle('on', Number(b.dataset.dots) === s.dots));
+      b.classList.toggle('on', b.dataset.dots === String(s.dots)));
     app.querySelectorAll('[data-big]').forEach((b) =>
       b.classList.toggle('on', (b.dataset.big === 'yes') === s.big));
   };
@@ -100,7 +101,7 @@ export function renderMake24Setup(profileId, mod) {
     refresh();
   }));
   app.querySelectorAll('[data-dots]').forEach((b) => b.addEventListener('click', () => {
-    s.dots = Number(b.dataset.dots);
+    s.dots = b.dataset.dots === 'random' ? 'random' : Number(b.dataset.dots);
     save(key, s);
     refresh();
   }));

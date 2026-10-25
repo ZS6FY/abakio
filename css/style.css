@@ -572,4 +572,4 @@ body.playing:has(.make24-play) .footer { display: none; }
 .m24-badges:empty { display: none; }
 .m24-rules-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .m24-rules-card h2 { margin: 0; }
-
+.seg-btn.m24-random { font-size: 0.95rem; padding: 8px 4px; }

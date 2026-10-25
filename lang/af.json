@@ -291,7 +291,7 @@
     "makeTargets": "Kies die getalle waarmee jy wil oefen.\nBy plussomme is dit die antwoord (6 + 3 = 9). By minussomme begin die som met hierdie getal (9 − 5 = 4).\nBy Kies twee en Kies drie is dit die getal wat jy met die kaarte moet maak.",
     "makePictures": "Aan: elke getal kry sy eie vormpies – hartjies, driehoeke, sterre – in rye van 5. So kan jy sien en tel.\nNá 'n fout: die prentjies wys net as 'n antwoord verkeerd was, om te help verstaan.\nAf: net getalle.",
     "make24How": "Jy kry vier getalle. Gebruik elke getal een keer en maak 24.\nTik 'n getal, dan +, −, × of ÷, en dan 'n tweede getal. Die twee getalle word een nuwe getal. Die som verskyn onder die kaart.\nGaan so aan totdat net een getal oor is. Is dit 24? Dan het jy dit reg!\nNet heelgetalle: 'n deelsom moet presies opgaan en jy kan nie onder 0 trek nie.\nOntdoen vat die laaste stap terug. Begin oor begin van voor af met dieselfde kaart. Wys my wys die maklikste manier, een stap op 'n slag. Slaan oor bring 'n ander kaart – die kaart kom later weer.",
-    "make24Level": "Elke kaart het een, twee of drie kolletjies in die hoeke.\nEen kolletjie: die maklikste kaarte.\nTwee kolletjies: 'n bietjie moeiliker.\nDrie kolletjies: die moeilikste kaarte. Hier help dit dikwels om te deel (÷) of met groot getalle te werk.",
+    "make24Level": "Elke kaart het een, twee of drie kolletjies in die hoeke.\nEen kolletjie: die maklikste kaarte.\nTwee kolletjies: 'n bietjie moeiliker.\nDrie kolletjies: die moeilikste kaarte. Hier help dit dikwels om te deel (÷) of met groot getalle te werk.\nLukraak: elke kaart kry 'n ewekansige vlak, met 'n gelyke kans op een, twee of drie kolletjies. Rekords vir Lukraak word apart gehou.",
     "make24Big": "Nee: die getalle op die kaart is van 1 tot 9.\nJa: die kaart kan ook getalle tot 20 hê, met altyd minstens een getal groter as 9. Dit is moeiliker.\nDie eerste keer wat jy Ja kies, neem dit 'n oomblik om die kaarte te skommel.",
     "make24Mode": "Vrye spel: geen horlosie nie. Neem jou tyd. Jy kan op 'Wys my' druk vir hulp, en 'n kaart wat jy oorslaan kom later weer.\nUitdaging: die horlosie loop net terwyl jy 'n kaart kan sien. Daar is geen 'Wys my' nie. As jy 'n kaart oorslaan, kry jy 'n nuwe kaart, maar {n} sekondes word by jou tyd getel. Probeer jou rekords klop!",
     "make24Count": "5 of 10: die rondte eindig wanneer jy soveel kaarte opgelos het. Jou totale tyd tel.\n∞: hou aan solank jy nie 'n kaart oorslaan nie. Die eerste keer wat jy oorslaan, eindig die rondte. Hoeveel kaarte kry jy in 'n ry reg? Daar is kentekens vir 5, 10, 25 en 50!"
@@ -372,6 +372,7 @@
       "r7": "In Uitdaging loop die horlosie. As jy 'n kaart oorslaan, kry jy 'n nuwe kaart, maar {n} sekondes word by jou tyd getel. In ∞ eindig die rondte as jy oorslaan.",
       "dots": "Die kolletjies in die hoeke wys hoe moeilik die kaart is: een kolletjie is maklik, drie is moeilik.",
       "close": "Maak toe"
-    }
+    },
+    "random": "Lukraak"
   }
 }

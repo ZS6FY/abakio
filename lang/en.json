@@ -291,7 +291,7 @@
     "makeTargets": "Choose the numbers you want to practise.\nIn plus sums it is the answer (6 + 3 = 9). In minus sums the sum starts with this number (9 − 5 = 4).\nIn Pick two and Pick three it is the number you must make with the cards.",
     "makePictures": "On: each number gets its own shapes – hearts, triangles, stars – in rows of 5. That way you can see and count.\nAfter a mistake: the pictures only show when an answer was wrong, to help understand.\nOff: numbers only.",
     "make24How": "You get four numbers. Use each number once and make 24.\nTap a number, then +, −, × or ÷, then a second number. The two numbers become one new number. The sum appears under the card.\nKeep going until only one number is left. Is it 24? Then you got it!\nWhole numbers only: a division must come out exactly and you can't go below 0.\nUndo takes back the last step. Start over begins again with the same card. Show me shows the easiest way, one step at a time. Skip brings a different card – the skipped card comes back later.",
-    "make24Level": "Every card has one, two or three dots in the corners.\nOne dot: the easiest cards.\nTwo dots: a bit harder.\nThree dots: the hardest cards. Here it often helps to divide (÷) or to work with big numbers.",
+    "make24Level": "Every card has one, two or three dots in the corners.\nOne dot: the easiest cards.\nTwo dots: a bit harder.\nThree dots: the hardest cards. Here it often helps to divide (÷) or to work with big numbers.\nRandom: every card gets a random level, with an equal chance of one, two or three dots. Records for Random are kept separately.",
     "make24Big": "No: the numbers on the card are from 1 to 9.\nYes: the card can also have numbers up to 20, always with at least one number bigger than 9. That is harder.\nThe first time you choose Yes, it takes a moment to shuffle the cards.",
     "make24Mode": "Free play: no clock. Take your time. You can tap 'Show me' for help, and a card you skip comes back later.\nChallenge: the clock only runs while you can see a card. There is no 'Show me'. If you skip a card, you get a new card, but {n} seconds are added to your time. Try to beat your records!",
     "make24Count": "5 or 10: the round ends when you have solved that many cards. Your total time counts.\n∞: keep going as long as you don't skip a card. The first time you skip, the round ends. How many cards can you solve in a row? There are badges for 5, 10, 25 and 50!"
@@ -372,6 +372,7 @@
       "r7": "In Challenge the clock runs. If you skip a card, you get a new card, but {n} seconds are added to your time. In ∞ the round ends when you skip.",
       "dots": "The dots in the corners show how hard the card is: one dot is easy, three is hard.",
       "close": "Close"
-    }
+    },
+    "random": "Random"
   }
 }

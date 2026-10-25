@@ -5,7 +5,7 @@
 // AND in version.json (keep them the same). That is what triggers
 // the "new version available" banner on the kids' devices.
 
-const VERSION = '0.10.0';
+const VERSION = '0.10.1';
 const CACHE = `abakio-${VERSION}`;
 
 // Every file the app needs to run offline. Add new files here as the app grows.
