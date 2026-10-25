@@ -2,7 +2,8 @@
 // screens, and shares the results screen, badges and "Hoe werk dit?" page with the other modules.
 
 import { renderMake24Setup } from './setup.js';
-import { renderMake24Play, SKIP_PENALTY_MS } from './play.js';
+import { renderMake24Play } from './play.js';
+import { SKIP_PENALTY_MS, GAME_CARDS } from './board.js';
 
 const size = (s) => (s.big ? 'big' : 'small');
 
@@ -15,7 +16,7 @@ export const MAKE24 = {
   // One-card records are kept by the play screen as "make24|card|dots|size".
   bestKey: (s) => `make24|${s.count === 'inf' ? 'streak' : `round${s.count}`}|${s.dots}|${size(s)}`,
   // A getter: the files import each other, so SKIP_PENALTY_MS must not be read while loading.
-  get helpVars() { return { n: SKIP_PENALTY_MS / 1000 }; },
+  get helpVars() { return { n: SKIP_PENALTY_MS / 1000, cards: GAME_CARDS }; },
   helpSections: [
     ['make24.howTitle', 'info.make24How'],
     ['make24.mode', 'info.make24Mode'],

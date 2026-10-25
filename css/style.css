@@ -573,3 +573,78 @@ body.playing:has(.make24-play) .footer { display: none; }
 .m24-rules-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .m24-rules-card h2 { margin: 0; }
 .seg-btn.m24-random { font-size: 0.95rem; padding: 8px 4px; }
+
+/* ---- v0.11: Maak 24 Saamspeel ---------------------------------------- */
+/* The whole screen is the "table": a bar on top, the corner blocks, the card in the middle. */
+.m24-together.screen { max-width: 900px; }
+.m24-together { --m24-size: min(80vw, 34vh, 340px); }
+.m24-table {
+  width: 100%; min-height: calc(100dvh - 32px);
+  display: grid; gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas: "bar bar" "tl tr" "mid mid" "bl br";
+}
+.m24-bar { grid-area: bar; display: flex; align-items: center; gap: 8px; }
+.m24-progress { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.m24-mid { grid-area: mid; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.m24-table .tl { grid-area: tl; } .m24-table .tr { grid-area: tr; }
+.m24-table .bl { grid-area: bl; } .m24-table .br { grid-area: br; }
+
+/* Corner blocks: big enough for a thumb; each player has their own colour on the edge. */
+.m24-seat {
+  --seat: var(--kio-teal);
+  position: relative; min-height: 64px; padding: 6px 12px;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 8px; text-align: left;
+  font: inherit; color: var(--text); cursor: pointer; touch-action: manipulation; user-select: none;
+  -webkit-user-select: none; -webkit-touch-callout: none;
+  background: var(--card); border: 3px solid var(--seat); border-radius: 16px;
+}
+.m24-seat.s2 { --seat: var(--kio-orange); }
+.m24-seat.s3 { --seat: var(--kio-yellow); }
+.m24-seat.s4 { --seat: #8fd3cd; }
+.seat-name { font-weight: 700; }
+.seat-key {
+  grid-column: 1; font-size: 0.8rem; font-weight: 700; justify-self: start;
+  padding: 0 6px; border-radius: 6px; border: 1px solid var(--muted); color: var(--muted);
+}
+.seat-score { grid-column: 2; grid-row: 1 / span 2; font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.seat-mark:empty, .seat-tick { display: none; }
+.seat-mark {
+  position: absolute; top: -10px; right: 10px; padding: 0 8px; border-radius: 10px;
+  font-size: 0.8rem; font-weight: 700; background: var(--seat); color: var(--kio-navy);
+}
+.m24-seat.turn, .m24-seat.spin { box-shadow: 0 0 0 4px #ffe08a; background: rgba(255, 224, 138, 0.22); }
+.m24-seat.claim { background: #ffe08a; color: var(--kio-navy); border-color: #fff; }
+.m24-seat.claim .seat-key { color: var(--kio-navy); border-color: var(--kio-navy); }
+.m24-seat.won { box-shadow: 0 0 0 4px #8ff0b0; }
+.m24-seat.locked { opacity: 0.45; }
+
+/* Join screen: not yet joined corners are dashed; joined ones light up. */
+.m24-join .m24-seat { min-height: 96px; border-style: dashed; opacity: 0.75; }
+.m24-join .m24-seat.joined { border-style: solid; opacity: 1; background: rgba(255, 224, 138, 0.22); }
+.m24-join .m24-seat.joined .seat-tick { display: block; grid-column: 2; grid-row: 1 / span 2; font-size: 1.8rem; color: #8ff0b0; }
+.m24-hint { margin: 0; color: var(--muted); }
+.m24-hint[hidden] { display: none; }
+.m24-join .btn-primary:disabled { opacity: 0.45; cursor: default; }
+
+/* Middle: the card, whose turn it is, and the answer-building controls */
+.m24-status { min-height: 1.5em; font-weight: 700; text-align: center; }
+.m24-countdown { margin-left: 6px; font-variant-numeric: tabular-nums; color: #ffe08a; }
+.m24-ops.is-off { visibility: hidden; }
+.m24-together .m24-steps {
+  min-height: 1.6rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 14px; font-size: 1.05rem;
+}
+.m24-together .feedback { font-size: 1.1rem; min-height: 1.4em; }
+.m24-controls { width: 100%; min-height: 48px; }
+.m24-controls .btn-primary { min-height: 48px; }
+.m24-actions.three-across { grid-template-columns: 1fr 1fr 1fr; }
+
+/* Final scoreboard */
+.m24-scores { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.m24-scores li { display: flex; justify-content: space-between; padding: 10px 14px; border-radius: 12px; background: var(--card); font-size: 1.15rem; }
+.m24-scores li.top { background: rgba(255, 224, 138, 0.2); border: 2px solid #ffe08a; }
+
+/* Saamspeel rules sit under the solo rules */
+.m24-rules-card h3 { margin: 4px 0 8px; width: auto; }
+

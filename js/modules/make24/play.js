@@ -13,34 +13,16 @@
 import { getProfile, getBest, setBest } from '../../core/storage.js';
 import { t } from '../../core/i18n.js';
 import { go, onLeave } from '../../core/router.js';
-import { mount, esc, setPlaying, formatSeconds } from '../../ui/dom.js';
+import { mount, setPlaying, formatSeconds } from '../../ui/dom.js';
 import { awardMake24Card, badgeName, badgeIcon } from '../practice/badges.js';
 import { renderResults } from '../practice/play.js';
-import { dealCard, easiest, isRanked } from './cards.js';
+import { easiest, isRanked } from './cards.js';
+import {
+  SKIP_PENALTY_MS, OPS, combine, dealAtLevel, cardMarkup, syncCard, rulesMarkup, wireRules
+} from './board.js';
 
-export const SKIP_PENALTY_MS = 10000;
 const RECENT_MAX = 20;
 const SKIP_RETURN_AFTER = 3; // free play: cards dealt before a skipped card comes back
-const POSITIONS = ['top', 'right', 'bottom', 'left'];
-const OPS = ['+', '−', '×', '÷'];
-const KIO = 'assets/kio/kio-pose-wave.svg';
-
-// The four wedges of the wheel behind the numbers: top, right, bottom, left.
-// Corner points sit on the diagonals of a circle of radius 46 around (50, 50).
-const WEDGES = [
-  'M50 50 L17.5 17.5 A46 46 0 0 1 82.5 17.5 Z',
-  'M50 50 L82.5 17.5 A46 46 0 0 1 82.5 82.5 Z',
-  'M50 50 L82.5 82.5 A46 46 0 0 1 17.5 82.5 Z',
-  'M50 50 L17.5 82.5 A46 46 0 0 1 17.5 17.5 Z'
-];
-
-// Whole numbers only, the same rules as the solver.
-function combine(a, op, b) {
-  if (op === '+') return { value: a + b };
-  if (op === '×') return { value: a * b };
-  if (op === '−') return a >= b ? { value: a - b } : { error: 'belowZero' };
-  return b !== 0 && a % b === 0 ? { value: a / b } : { error: 'notExact' };
-}
 
 export function renderMake24Play(profileId, settings, mod) {
   if (!getProfile(profileId)) return;
@@ -78,7 +60,6 @@ export function renderMake24Play(profileId, settings, mod) {
   let skips = 0;
   let penalty = 0;
   let roundOver = false;
-  let rulesOpen = false;
   let cardRecord = null;      // best new one-card time set in this round
   const freshBadges = [];
 
@@ -110,23 +91,11 @@ export function renderMake24Play(profileId, settings, mod) {
         <button type="button" class="btn" id="skip" data-i18n="make24.skip"></button>
       </div>
 
-      <div class="m24-rules" id="rules" role="dialog" aria-modal="true" aria-labelledby="rules-title" hidden>
-        <div class="m24-rules-card">
-          <div class="m24-rules-head">
-            <h2 id="rules-title" data-i18n="make24.rules.title"></h2>
-            <button type="button" class="btn-icon" id="rules-x" aria-label="close">✕</button>
-          </div>
-          <ol>
-            ${[1, 2, 3, 4, 5, 6, 7].map((n) =>
-              `<li>${esc(t(`make24.rules.r${n}`, { n: SKIP_PENALTY_MS / 1000 }))}</li>`).join('')}
-          </ol>
-          <p data-i18n="make24.rules.dots"></p>
-          <button type="button" class="btn btn-primary" id="rules-close" data-i18n="make24.rules.close"></button>
-        </div>
-      </div>
+      ${rulesMarkup()}
     </section>`);
 
   const el = (id) => app.querySelector(`#${id}`);
+  const rules = wireRules(app, () => draw()); // the clock follows the rules window
 
   // ---- the horlosie ----
   function tick() {
@@ -139,7 +108,7 @@ export function renderMake24Play(profileId, settings, mod) {
 
   // Runs only while a card is face up and being worked on, with the rules closed.
   function syncClock() {
-    const run = isChallenge && card !== null && faceUp && !rulesOpen && (phase === 'play' || phase === 'wrong');
+    const run = isChallenge && card !== null && faceUp && !rules.isOpen() && (phase === 'play' || phase === 'wrong');
     if (run && clock.since === null) clock.since = performance.now();
     if (!run && clock.since !== null) { tick(); clock.since = null; }
   }
@@ -148,50 +117,15 @@ export function renderMake24Play(profileId, settings, mod) {
   const showTime = () => { if (isChallenge) el('timer').textContent = formatSeconds(elapsed()); };
 
   if (isChallenge) timerId = setInterval(showTime, 100);
-  const onKey = (e) => { if (e.key === 'Escape' && rulesOpen) setRules(false); };
-  document.addEventListener('keydown', onKey);
   onLeave(() => {
     gone = true;
     clearTimeout(timer);
     clearInterval(timerId);
-    document.removeEventListener('keydown', onKey);
+    rules.dispose();
   });
 
   // ---- drawing ----
-  // The card is built once per deal and then only updated, so Kio's picture never reloads.
-  function buildCard() {
-    const tiles = POSITIONS.map((pos, i) =>
-      `<button type="button" class="m24-num m24-${pos}" data-i="${i}"><span></span></button>`).join('');
-    const dots = ['c1', 'c2', 'c3', 'c4']
-      .map((c) => `<span class="m24-dots ${c}" aria-hidden="true">${'<i></i>'.repeat(card.dots)}</span>`).join('');
-    const wedges = WEDGES.map((d, i) => `<path class="w${i}" d="${d}"/>`).join('');
-    el('stage').innerHTML = `
-      <button type="button" class="m24-back" id="back" aria-label="${esc(t('make24.flip'))}">
-        <img src="${KIO}" alt="" draggable="false">
-      </button>
-      <div class="m24-card lv${card.dots}" id="face" hidden>
-        <svg class="m24-wheel" viewBox="0 0 100 100" aria-hidden="true">${wedges}</svg>
-        ${dots}
-        <span class="m24-kio" aria-hidden="true"><img src="${KIO}" alt="" draggable="false"></span>
-        ${tiles}
-      </div>`;
-  }
-
-  function syncCard() {
-    el('back').hidden = faceUp;
-    const face = el('face');
-    face.hidden = !faceUp;
-    face.classList.toggle('won', phase === 'won');
-    face.querySelectorAll('.m24-num').forEach((b, i) => {
-      const v = values[i];
-      const text = v === null ? '' : String(v);
-      b.firstElementChild.textContent = text;
-      b.dataset.len = text.length;
-      b.classList.toggle('sel', i === from);
-      b.classList.toggle('gone', v === null);
-      b.disabled = v === null || phase !== 'play' || !faceUp;
-    });
-  }
+  const buildCard = () => { el('stage').innerHTML = cardMarkup(card); };
 
   function progressText() {
     if (isTimed) return `${Math.min(solved + 1, roundSize)} / ${roundSize}`;
@@ -201,12 +135,12 @@ export function renderMake24Play(profileId, settings, mod) {
 
   function draw() {
     const live = card !== null;
-    const playing = live && faceUp && !rulesOpen && (phase === 'play' || phase === 'wrong');
+    const playing = live && faceUp && !rules.isOpen() && (phase === 'play' || phase === 'wrong');
 
     syncClock();
     showTime();
     el('progress').textContent = progressText();
-    if (live) syncCard();
+    if (live) syncCard(app, { values, from, faceUp, won: phase === 'won', active: phase === 'play' && faceUp });
     el('ops').querySelectorAll('[data-op]').forEach((b) => {
       b.classList.toggle('on', b.dataset.op === op);
       b.disabled = !live || !faceUp || phase !== 'play';
@@ -411,13 +345,6 @@ export function renderMake24Play(profileId, settings, mod) {
     draw();
   }
 
-  function setRules(open) {
-    rulesOpen = open;
-    el('rules').hidden = !open;
-    draw(); // the clock follows rulesOpen
-    if (open) el('rules-close').focus({ preventScroll: true }); // keep the top of the rules in view
-  }
-
   // ---- dealing ----
   function showCard(next) {
     card = next;
@@ -433,21 +360,7 @@ export function renderMake24Play(profileId, settings, mod) {
 
   function deal() {
     if (gone) return;
-    // Lukraak: every card gets its own level, 1, 2 or 3 with equal chance. If a level has no
-    // card left to deal (a long recent list), the other levels are tried before giving up.
-    const first = Math.floor(Math.random() * 3);
-    const levels = settings.dots === 'random'
-      ? [1 + first, ...[1, 2, 3].filter((l) => l !== 1 + first)]
-      : [settings.dots];
-    let next = null;
-    for (const dots of levels) {
-      try {
-        next = dealCard({ dots, bigNumbers: settings.big, recent });
-        break;
-      } catch {
-        // try the next level
-      }
-    }
+    const next = dealAtLevel(settings.dots, settings.big, recent);
     if (!next) return noCard();
     recent.push(next);
     if (recent.length > RECENT_MAX) recent.shift();
@@ -516,9 +429,6 @@ export function renderMake24Play(profileId, settings, mod) {
   el('show').addEventListener('click', showMe);
   el('skip').addEventListener('click', skip);
   el('main').addEventListener('click', () => mainAction?.());
-  el('rules-btn').addEventListener('click', () => setRules(true));
-  el('rules-close').addEventListener('click', () => setRules(false));
-  el('rules-x').addEventListener('click', () => setRules(false));
   el('quit').addEventListener('click', () => {
     // A round in Uitdaging is worth keeping, so ask first (like the other modules).
     if (isChallenge && !confirm(t('play.quitConfirm'))) return;
