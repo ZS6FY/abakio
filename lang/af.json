@@ -379,7 +379,10 @@
         "r2": "Wie eerste druk, bou die antwoord. Jy het tot {n} minute.",
         "r3": "Reg? Jy wen die kaart en kry soveel punte as wat die kaart kolletjies het.",
         "r4": "Verkeerd? Die volgende speler wat gedruk het, kry 'n kans. Niemand val uit nie.",
-        "r5": "Ná {cards} kaarte wen die speler met die meeste punte."
+        "r5": "Ná {m} minute vra die speletjie \"Nog tyd?\". Druk dit voor die aftelling klaar is, dan kry julle {x} minute ekstra. Anders gaan die kaart na die bonusstapel.",
+        "r6": "As almal saamstem, kan julle 'n kaart oorslaan (ná {m} minute). Ná die {s}de keer oorslaan is die speletjie verby.",
+        "r7": "Aan die einde kan julle 'n bonusrondte speel met die kaarte wat eenkant gesit is – vir dubbel punte.",
+        "r8": "Ná {cards} kaarte wen die speler met die meeste punte."
       }
     },
     "random": "Lukraak",
@@ -412,7 +415,20 @@
       "seeScores": "Sien die eindtelling",
       "q2": "2de",
       "q3": "3de",
-      "q4": "4de"
+      "q4": "4de",
+      "nogTyd": "Nog tyd? ({s})",
+      "extraLeft": "Ekstra tyd {t}",
+      "vote": "Slaan die kaart oor? Elke speler druk sy hoek om saam te stem.",
+      "skipsLeft": "Oorslaan: {n} oor",
+      "lastSkip": "Dit was die laaste keer oorslaan.",
+      "skipped": "Julle het die kaart oorgeslaan.",
+      "toBonus": "Die kaart gaan na die bonusstapel.",
+      "gone": "Die kaart is weg.",
+      "bonusAsk": "Bonusrondte?",
+      "bonusInfo": "Kaarte op die bonusstapel: {n}. Elke kaart tel dubbel punte.",
+      "bonusCard": "Bonus {n} / {total}",
+      "continue": "Verder",
+      "cancel": "Kanselleer"
     }
   }
 }

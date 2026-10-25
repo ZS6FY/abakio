@@ -7,7 +7,11 @@ import { dealCard } from './cards.js';
 
 export const SKIP_PENALTY_MS = 10000;   // Uitdaging: time added for "Slaan oor"
 export const CLAIM_MS = 5 * 60 * 1000;  // Saamspeel: time the claimer has to build the answer
-export const GAME_CARDS = 12;           // Saamspeel: cards in one game
+export const GAME_CARDS = 12;           // Saamspeel: cards in one game (before a bonus round)
+export const CARD_TIME_MS = 120000;     // Saamspeel: after this, "Nog tyd?" and "Slaan oor" appear
+export const NOG_TYD_PROMPT_MS = 20000; // Saamspeel: how long "Nog tyd?" waits for a tap
+export const EXTRA_TIME_MS = 120000;    // Saamspeel: extra time from "Nog tyd?" (once per card)
+export const MAX_SKIPS = 5;             // Saamspeel: the last skip ends the 12-card part
 
 export const POSITIONS = ['top', 'right', 'bottom', 'left'];
 export const OPS = ['+', '−', '×', '÷'];
@@ -99,7 +103,9 @@ export function rulesMarkup() {
         <ol>${list('make24.rules.r', 7, { n: SKIP_PENALTY_MS / 1000 })}</ol>
         <p data-i18n="make24.rules.dots"></p>
         <h3 data-i18n="make24.rules.together.title"></h3>
-        <ol>${list('make24.rules.together.r', 5, { n: CLAIM_MS / 60000, cards: GAME_CARDS })}</ol>
+        <ol>${list('make24.rules.together.r', 8, {
+          n: CLAIM_MS / 60000, cards: GAME_CARDS, m: CARD_TIME_MS / 60000, x: EXTRA_TIME_MS / 60000, s: MAX_SKIPS
+        })}</ol>
         <button type="button" class="btn btn-primary" id="rules-close" data-i18n="make24.rules.close"></button>
       </div>
     </div>`;

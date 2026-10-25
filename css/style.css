@@ -648,3 +648,22 @@ body.playing:has(.make24-play) .footer { display: none; }
 /* Saamspeel rules sit under the solo rules */
 .m24-rules-card h3 { margin: 4px 0 8px; width: auto; }
 
+/* ---- v0.11.1: Saamspeel part 2 --------------------------------------- */
+/* Players at the top sit opposite: their blocks are turned so they read them the right way up. */
+.m24-table .m24-seat.tl, .m24-table .m24-seat.tr { transform: rotate(180deg); }
+.m24-later { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.m24-later[hidden] { display: none; }
+.m24-later.single { grid-template-columns: 1fr; } /* only one of the two buttons shows */
+.m24-controls > .btn { width: 100%; min-height: 48px; }
+/* A tick on corners that agreed to skip */
+.m24-seat.voted .seat-tick {
+  display: block; position: absolute; top: -10px; left: 10px; padding: 0 8px; border-radius: 10px;
+  font-size: 0.9rem; font-weight: 800; background: #8ff0b0; color: var(--kio-navy);
+}
+/* With players at the top too, the card is a little smaller so all four corners fit a phone. */
+.m24-together.has-top { --m24-size: min(80vw, 25vh, 340px); }
+/* A message instead of a card (shuffling, bonus question) needs no square. */
+.m24-together .m24-stage:has(> .m24-message) { height: auto; min-height: 96px; }
+.m24-bonus-ask h2 { color: var(--text); margin-bottom: 6px; }
+.m24-bonus-ask p { margin: 0; }
+

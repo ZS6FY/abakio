@@ -379,7 +379,10 @@
         "r2": "Whoever presses first builds the answer. You have up to {n} minutes.",
         "r3": "Correct? You win the card and get as many points as the card has dots.",
         "r4": "Wrong? The next player who pressed gets a chance. Nobody is out.",
-        "r5": "After {cards} cards the player with the most points wins."
+        "r5": "After {m} minutes the game asks \"More time?\". Press it before the countdown ends and you get {x} extra minutes. Otherwise the card goes to the bonus pile.",
+        "r6": "If everyone agrees, you can skip a card (after {m} minutes). After the {s}th skip the game is over.",
+        "r7": "At the end you can play a bonus round with the cards that were put aside – for double points.",
+        "r8": "After {cards} cards the player with the most points wins."
       }
     },
     "random": "Random",
@@ -412,7 +415,20 @@
       "seeScores": "See the final score",
       "q2": "2nd",
       "q3": "3rd",
-      "q4": "4th"
+      "q4": "4th",
+      "nogTyd": "More time? ({s})",
+      "extraLeft": "Extra time {t}",
+      "vote": "Skip this card? Every player presses their corner to agree.",
+      "skipsLeft": "Skips: {n} left",
+      "lastSkip": "That was the last skip.",
+      "skipped": "You skipped the card.",
+      "toBonus": "The card goes to the bonus pile.",
+      "gone": "The card is gone.",
+      "bonusAsk": "Bonus round?",
+      "bonusInfo": "Cards on the bonus pile: {n}. Every card counts double points.",
+      "bonusCard": "Bonus {n} / {total}",
+      "continue": "Continue",
+      "cancel": "Cancel"
     }
   }
 }
